@@ -1,0 +1,14 @@
+<p>Stock Search</p>
+<form>
+    <input type="text" placeholder="Enter stock name" matInput [formControl]="searchTerm" [matAutocomplete]="auto">
+    
+
+        
+    <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngIf="isLoading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+        <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.ticker">
+            {{suggestion.ticker | uppercase }} | {{ suggestion.name }}
+        </mat-option>
+    </mat-autocomplete>
+    <button type="button" (click)="searchStock()">Search</button>
+</form>
