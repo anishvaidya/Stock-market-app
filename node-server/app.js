@@ -53,12 +53,15 @@ app.get('/getCompanyLatestPrice', (request, response) => {
 
 app.get('/getCompanyHistoricalData', (request, response) => {
     let keyword = request.query.keyword;
-    api.getCompanyHistoricalData(keyword, response);
+    let startDate = request.query.startDate;
+    api.getCompanyHistoricalData(keyword, startDate, response);
 });
 
 app.get('/getDailyChartData', (request, response) => {
     let keyword = request.query.keyword;
-    api.getDailyChartData(keyword, response);
+    let startDate = request.query.startDate;
+    // let startDate = "2020-10-16"
+    api.getDailyChartData(keyword, startDate, response);
 });
 
 app.get('/getNewsData', (request, response) => {

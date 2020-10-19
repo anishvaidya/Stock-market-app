@@ -26,7 +26,7 @@ export class SearchComponent implements OnInit {
       (term) => {
         if (term != ""){
           this.suggestions = [];
-          console.log(this.suggestions.length);
+          // console.log(this.suggestions.length);
           this.service.getSearchSuggestions(term).then((data) => {
             this.suggestions = data;
             this.isLoading = false;

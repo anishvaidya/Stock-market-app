@@ -17,6 +17,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+//modal
+import { BuyComponent } from './components/modals/buy/buy.component';
+import { MyportfolioComponent } from './components/cards/myportfolio/myportfolio.component';
+import { SellComponent } from './components/modals/sell/sell.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +33,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     DetailsComponent,
     WatchlistComponent,
     PortfolioComponent,
+    BuyComponent,
+    MyportfolioComponent,
+    SellComponent,
     
   ],
   imports: [
@@ -38,9 +47,12 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatAutocompleteModule,
     MatInputModule,
     BrowserAnimationsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgbModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
+  entryComponents: [BuyComponent]
 })
 export class AppModule { }

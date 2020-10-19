@@ -1,4 +1,13 @@
 <p>details works!</p>
-<div>{{keyword}}</div>
-<div>{{description}}</div>
-<div>{{latestPrice.last}}</div>
+<mat-spinner diameter="50" *ngIf="isLoading"></mat-spinner>
+
+<div *ngIf="!isLoading">
+    <div>Current time {{currentDateTime}}</div>
+    <div *ngIf="isMarketOpen">Market is open</div>
+    <div *ngIf="!isMarketOpen">Market Closed on {{latestDateTime}}</div>
+    <div>{{companyDescription.ticker}}</div>
+    <div>Change {{latestPrice.last - latestPrice.prevClose}}</div>
+    <div *ngIf="companyDescription != null && isValid">{{companyDescription.description}}</div>
+    <div *ngIf="latestPrice != null">{{latestPrice.last}}</div>
+    <button (click)="openBuyModal()">Buy</button>
+</div>

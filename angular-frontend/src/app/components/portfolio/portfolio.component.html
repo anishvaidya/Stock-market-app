@@ -1,1 +1,14 @@
-<p>portfolio works!</p>
+<div>My Portfolio</div>
+<div *ngIf="myPortfolios">
+    <div *ngFor="let portfolio of myPortfolios | keyvalue">
+        <!-- <div class="card">
+            <div (click)="Click()">{{portfolio.value.ticker}}</div>
+            <div>{{portfolio.value.quantity}}</div>
+            <div>{{portfolio.value.totalCost}}</div>
+            <button class="btn btn-primary" (click)="openBuyModal();">Buy</button>
+        </div> -->
+        <app-myportfolio [portfolio]="portfolio"></app-myportfolio>
+        
+        <br><br>
+    </div>
+</div>

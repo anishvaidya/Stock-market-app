@@ -80,8 +80,9 @@ function getCompanyLatestPrice(keyword, response){
     });
 }
 
-function getCompanyHistoricalData(keyword, response){
-    let url = `https://api.tiingo.com/tiingo/daily/${keyword}/prices?startDate=2019-09-10&resampleFreq=daily&columns=date,open,high,low,close,volume&token=${tiingoApiKey}`;
+function getCompanyHistoricalData(keyword, startDate, response){
+    // let url = `https://api.tiingo.com/tiingo/daily/${keyword}/prices?startDate=2019-12-31&resampleFreq=daily&columns=date,open,high,low,close,volume&token=${tiingoApiKey}`;
+    let url = `https://api.tiingo.com/tiingo/daily/${keyword}/prices?startDate=${startDate}&columns=date,open,high,low,close,volume&token=${tiingoApiKey}`;
     let fetchData = fetch(url);
     let historicalData = null;
     fetchData.then((res) => res.json()).then((json) => {
@@ -90,8 +91,8 @@ function getCompanyHistoricalData(keyword, response){
     });
 }
 
-function getDailyChartData(keyword, response){
-    let url = `https://api.tiingo.com/iex/${keyword}/prices?startDate=2019-09-10&resampleFreq=4min&columns=date,open,high,low,close,volume&token=${tiingoApiKey}`;
+function getDailyChartData(keyword, startDate, response){
+    let url = `https://api.tiingo.com/iex/${keyword}/prices?startDate=${startDate}&resampleFreq=4min&columns=date,open,high,low,close,volume&token=${tiingoApiKey}`;
     let fetchData = fetch(url);
     let dailyChartData = null;
     fetchData.then((res) => res.json()).then((json) => {
@@ -102,7 +103,7 @@ function getDailyChartData(keyword, response){
 }
 
 function getNewsData(keyword, response){
-    let url = `https://newsapi.org/v2/everything?apiKey=${newsApiKey}&q=${keyword}&page=1&pageSize=25`;
+    let url = `https://newsapi.org/v2/everything?apiKey=${newsApiKey}&q=${keyword}&page=1&pageSize=20`;
     let fetchData = fetch(url);
     let newsData = null;
     fetchData.then((res) => res.json()).then((json) => {

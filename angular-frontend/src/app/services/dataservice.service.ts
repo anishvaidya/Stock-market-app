@@ -40,31 +40,31 @@ export class DataService {
     });
   }
 
-  getCompanyHistoricalData(keyword: string) {
-    let url = `http://localhost:3000/getCompanyHistoricalData?keyword=${keyword}`;
+  getCompanyHistoricalData(keyword: string, startDate: string) {
+    let url = `http://localhost:3000/getCompanyHistoricalData?keyword=${keyword}&startDate=${startDate}`;
     let fetchData = fetch(url);
     let historicalData = null;
-    fetchData.then((res) => res.json()).then((json) => {
+    return fetchData.then((res) => res.json()).then((json) => {
       historicalData = json;
       return historicalData;
     });
   }
 
-  getDailyChartData(keyword: string) {
-    let url = `http://localhost:3000/getDailyChartData?keyword=${keyword}`;
+  getDailyChartData(keyword: string, startDate: string) {
+    let url = `http://localhost:3000/getDailyChartData?keyword=${keyword}&startDate=${startDate}`;
     let fetchData = fetch(url);
     let dailyChartData = null;
-    fetchData.then((res) => res.json()).then((json) => {
+    return fetchData.then((res) => res.json()).then((json) => {
       dailyChartData = json;
       return dailyChartData;
     });
   }
 
-  getNewsData(keyword) {
+  getNewsData(keyword: string) {
     let url = `http://localhost:3000/getNewsData?keyword=${keyword}`;
     let fetchData = fetch(url);
     let newsData = null;
-    fetchData.then((res) => res.json()).then((json) => {
+    return fetchData.then((res) => res.json()).then((json) => {
       newsData = json;
       return newsData
     });
