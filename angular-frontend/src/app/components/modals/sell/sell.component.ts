@@ -16,9 +16,11 @@ export class SellComponent implements OnInit {
   @Input() availableQuantity;
   @Input() ticker;
   @Input() stockPrice;
+  @Input() currentTotalCost;
 
   quantity: FormControl = new FormControl();
   totalPrice;
+  actualTotalPrice;
   isValid = false;
 
   constructor(public activeModal: NgbActiveModal, private dataStorage: DatastorageService) { }
@@ -26,10 +28,13 @@ export class SellComponent implements OnInit {
   ngOnInit(): void {
     this.quantity.setValue(0);
     this.totalPrice = 0.00;
+    this.actualTotalPrice = 0.00;
 
     this.quantity.valueChanges.subscribe(() => {
       this.isValid = false;
-      this.totalPrice = this.quantity.value * this.stockPrice;
+      this.totalPrice = this.quantity.value * this.stockPrice.last;
+      this.actualTotalPrice = this.quantity.value * (this.currentTotalCost / this.availableQuantity);
+
       console.log(this.totalPrice);
       if (this.quantity.value > 0 && this.quantity.value <= this.availableQuantity){
         this.isValid = true;
@@ -39,7 +44,7 @@ export class SellComponent implements OnInit {
   }
 
   sellStock(){
-    let saleReceipt = this.dataStorage.sellStock(this.ticker, this.quantity.value, this.totalPrice);
+    let saleReceipt = this.dataStorage.sellStock(this.ticker, this.quantity.value, this.actualTotalPrice);
     console.log("Successful sale" , saleReceipt);
   }
 

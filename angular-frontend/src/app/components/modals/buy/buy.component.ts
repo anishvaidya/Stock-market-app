@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl } from '@angular/forms';
 
@@ -13,30 +13,27 @@ import { DatastorageService } from '../../../services/datastorage.service';
 export class BuyComponent implements OnInit {
 
   @Input() ticker;
-  @Input() stockPrice: Number;
-  @Input() public latestPrice;
-  currentStockPrice;
+  @Input() public currentPriceLatest;
 
   quantity: FormControl = new FormControl();
   totalPrice;
   isValid = false;
+  intervalID;
 
   constructor(public activeModal: NgbActiveModal, private dataStorage: DatastorageService) {
+    this.intervalID = null;
   }
 
   ngOnInit(): void {
     console.log("modal buy open");
-    console.log("latest price", this.latestPrice);
-    // this.currentStockPrice = this.stockPrice;
-    // console.log(typeof this.currentStockPrice);
-    // console.log(this.currentStockPrice);
     this.quantity.setValue(0);
     this.totalPrice = 0.00;
+    
+
     this.quantity.valueChanges.subscribe(() => {
       this.isValid = false;
-      // this.totalPrice = this.quantity.value * this.currentStockPrice;
-      // this.totalPrice = this.quantity.value * this.stockPrice;
-      this.totalPrice = this.quantity.value * this.latestPrice.last;
+      this.totalPrice = this.quantity.value * this.currentPriceLatest.last;
+      this.intervalID = setInterval(() => this.updateTotalPrice(), 100);
       console.log(this.totalPrice);
       if (this.totalPrice > 0) {
         this.isValid = true;
@@ -44,19 +41,20 @@ export class BuyComponent implements OnInit {
     });
   }
 
-  // ngOnChanges(changes: SimpleChanges) {
-
-  //   this.currentStockPrice = changes.stockPrice.currentValue;
-  //   console.log("price changed");
-  //   // You can also use categoryId.previousValue and 
-  //   // categoryId.firstChange for comparing old and new values
-
-  // }
+  updateTotalPrice(){
+    this.totalPrice = this.quantity.value * this.currentPriceLatest.last;
+  }
 
   buyStock() {
 
     let buyReceipt = this.dataStorage.buyStock(this.ticker, this.quantity.value, this.totalPrice);
     console.log("Successful purchase", buyReceipt);
+  }
+
+  ngOnDestroy(){
+    if (this.intervalID != null){
+      clearInterval(this.intervalID);
+    }
   }
 
 

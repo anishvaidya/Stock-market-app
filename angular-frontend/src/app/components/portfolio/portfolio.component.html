@@ -1,5 +1,6 @@
 <div>My Portfolio</div>
-<div *ngIf="myPortfolios">
+<mat-spinner diameter="50" *ngIf="isLoading && myPortfolios.length != 0"></mat-spinner>
+<div *ngIf="myPortfolios.length != 0">
     <div *ngFor="let portfolio of myPortfolios | keyvalue">
         <!-- <div class="card">
             <div (click)="Click()">{{portfolio.value.ticker}}</div>
@@ -7,8 +8,11 @@
             <div>{{portfolio.value.totalCost}}</div>
             <button class="btn btn-primary" (click)="openBuyModal();">Buy</button>
         </div> -->
-        <app-myportfolio [portfolio]="portfolio"></app-myportfolio>
-        
+        <div *ngIf="currentPriceOfStocks.length != 0">
+            <app-myportfolio [portfolio]="portfolio" [currentPriceOfStocks]="currentPriceOfStocks"></app-myportfolio>
         <br><br>
+        </div>
+        
     </div>
 </div>
+<div *ngIf="myPortfolios.length == 0">You have no stocks</div>

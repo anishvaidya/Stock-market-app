@@ -28,7 +28,8 @@ function buildCompanyDescription(companyDescription){
 
 function buildCompanyLatestPrice(data){
     if (data.length != 0){
-        return data[0];
+        // return data[0];
+        return data
     }
     return {}
 }

@@ -67,22 +67,18 @@ export class DatastorageService {
       let myUpdatedStocks = [];
       if (myStocks.length != 0) {
         for (var i = 0; i < myStocks.length; i++) {
-          if (myStocks[i]["ticker"] == stock){
+          if (myStocks[i]["ticker"] == stock) {
             myStocks[i]["quantity"] -= quantity;
             myStocks[i]["totalCost"] -= orderPrice;
             // break;
-            if (myStocks[i]["quantity"] != 0){
+            if (myStocks[i]["quantity"] != 0) {
               myUpdatedStocks.push(myStocks[i]);
             }
           }
-          else{
+          else {
             myUpdatedStocks.push(myStocks[i]);
           }
         }
-        // if (myStocks[i]["quantity"] == 0){
-        //   // delete stock
-
-        // }
         this.localStorage.setItem("myStocks", JSON.stringify(myUpdatedStocks));
         this.subject.next(myUpdatedStocks);
         return true;
@@ -92,7 +88,45 @@ export class DatastorageService {
   }
 
   getStocks() {
-    let myStocks = this.localStorage.getItem("myStocks");
-    return JSON.parse(myStocks);
+    let myStocks = JSON.parse(this.localStorage.getItem("myStocks")) || [];
+    return myStocks;
   }
+
+  addToWatchlist(ticker: string) {
+    if (this.isLocalStorageSupported) {
+      let myWatchlist = JSON.parse(this.localStorage.getItem("myWatchlist")) || [];
+      // if (myWatchlist.length == 0){
+
+      // }
+      myWatchlist.push(ticker);
+      myWatchlist.sort((a, b) => a.localeCompare(b));
+      this.localStorage.setItem("myWatchlist", JSON.stringify(myWatchlist));
+      this.subject.next(myWatchlist);
+      return true;
+    }
+    return false;
+  }
+
+  removeFromWatchlist(ticker: string) {
+    // assuming ticker is present in the watchlist
+    if (this.isLocalStorageSupported) {
+      let myUpdatedWatchlist = [];
+      let myWatchlist = this.seeWatchlist();
+      for (let i = 0; i < myWatchlist.length; i++) {
+        if (myWatchlist[i] !== ticker) {
+          myUpdatedWatchlist.push(myWatchlist[i]);
+        }
+      }
+      this.localStorage.setItem("myWatchlist", JSON.stringify(myUpdatedWatchlist));
+      this.subject.next(myUpdatedWatchlist);
+      return true;
+    }
+    return false;
+  }
+
+  seeWatchlist() {
+    let myWatchlist = JSON.parse(this.localStorage.getItem("myWatchlist")) || [];
+    return myWatchlist;
+  }
+
 }

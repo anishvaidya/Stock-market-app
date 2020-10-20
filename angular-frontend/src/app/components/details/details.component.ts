@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../../services/dataservice.service';
 
@@ -16,7 +16,7 @@ export class DetailsComponent implements OnInit {
 
   keyword: string;
   companyDescription;
-  public latestPrice;
+  latestPrice;
   public currentPriceLatest;
   dailyChartData;
   companyHistoricalData;
@@ -29,7 +29,8 @@ export class DetailsComponent implements OnInit {
   latestDate;
   latestDateTime;
   currentDateTime;
-  // modalRef;
+  currentDateTimeID;
+  isFilled;
 
 
   constructor(private service: DataService, private router: Router, private modalService: NgbModal) {
@@ -40,17 +41,17 @@ export class DetailsComponent implements OnInit {
     this.keyword = this.router.url.split("/")[2];
     this.companyHistoricalData = null;
     this.newsData = null;
+    this.dailyChartData = null;
     this.dailyChartDataID = null;
+    this.currentPriceLatest = null;
+    this.currentDateTimeID = null;
   }
 
   ngOnInit(): void {
     this.retrieveData();
+    this.updateCurrentTime();
+    this.currentDateTimeID = setInterval(() => this.updateCurrentTime(), 15000);
   }
-
-  // ngOnChanges(changes: SimpleChanges){
-  //   console.log("price changed");
-  //   this.modalRef.componentInstance.latestPrice = this.currentPriceLatest.last;
-  // }
 
   retrieveData() {
     this.service.getCompanyDescription(this.keyword).then((data) => {
@@ -72,16 +73,15 @@ export class DetailsComponent implements OnInit {
     console.log(Date.now());
     this.service.getCompanyLatestPrice(this.keyword).then((data) => {
       this.latestPrice = data;
-      // this.currentPriceLatest = new String(this.latestPrice.last);
       this.updateCurrentLatestPrice();
 
       // let startDate = new Date(this.latestPrice.timestamp).toLocaleDateString();
       // let startDate = new Date(this.latestPrice.timestamp).toISOString().slice(0,10);
 
-      // current date time
-      let currentDateTime = new Date().toLocaleString('en-US', { hour12: false }).split(",");
-      let currentDate = currentDateTime[0].split("/");
-      this.currentDateTime = currentDate[2] + "-" + currentDate[0] + "-" + currentDate[1] + currentDateTime[1];
+      // // current date time
+      // let currentDateTime = new Date().toLocaleString('en-US', { hour12: false }).split(",");
+      // let currentDate = currentDateTime[0].split("/");
+      // this.currentDateTime = currentDate[2] + "-" + currentDate[0] + "-" + currentDate[1] + currentDateTime[1];
 
 
       // date time when market closed
@@ -94,12 +94,15 @@ export class DetailsComponent implements OnInit {
       console.log(this.latestDateTime);
 
       // getting daily chart data
-      this.getDailyChartData();
-      if (this.dailyChartDataID == null){
+      if (this.dailyChartData == null){
+        console.log("new API called for daily chart data");
+        this.getDailyChartData();
+      }
+      if (this.dailyChartDataID == null) {
         console.log("daily chart interval set");
         this.dailyChartDataID = setInterval(() => this.getDailyChartData(), (1000 * 60 * 4));
       }
-      
+
 
       // check if market is open
       let browserTime = Date.now();
@@ -156,26 +159,50 @@ export class DetailsComponent implements OnInit {
     });
   }
 
-  updateCurrentLatestPrice(){
+  updateCurrentLatestPrice() {
     console.log("price updated");
-    this.currentPriceLatest = new Number(this.latestPrice.last);
+    console.log("price was", this.latestPrice.last);
+    if (this.currentPriceLatest == null){
+      this.currentPriceLatest = {"last": this.latestPrice.last};
+    }
+    else{
+      this.currentPriceLatest.last = this.latestPrice.last;
+    }
   }
 
   openBuyModal() {
     const modalRef = this.modalService.open(BuyComponent, { backdrop: 'static' });
     modalRef.componentInstance.ticker = this.companyDescription.ticker;
-    modalRef.componentInstance.latestPrice = this.latestPrice;
-    // modalRef.componentInstance.stockPrice = this.currentPriceLatest;
+    modalRef.componentInstance.currentPriceLatest = this.currentPriceLatest;
+  }
+
+  toggleWatchlist(){
+    console.log("watchlist button clicked");
+    if (this.isFilled == "bi bi-star"){
+      this.isFilled = "bi bi-star-fill";
+    }
+    
+  }
+
+  updateCurrentTime(){
+    // current date time
+    let currentDateTime = new Date().toLocaleString('en-US', { hour12: false }).split(",");
+    let currentDate = currentDateTime[0].split("/");
+    this.currentDateTime = currentDate[2] + "-" + currentDate[0] + "-" + currentDate[1] + currentDateTime[1];
   }
 
   ngOnDestroy() {
-    if (this.latestPriceID) {
+    if (this.latestPriceID != null) {
       console.log("latest price API stopped");
       clearInterval(this.latestPriceID);
     }
-    if (this.dailyChartDataID) {
+    if (this.dailyChartDataID != null) {
       console.log("daily chart data API stopped");
       clearInterval(this.dailyChartDataID);
+    }
+    if (this.currentDateTimeID != null){
+      console.log("current time interval deleted");
+      clearInterval(this.currentDateTimeID);
     }
   }
 }
