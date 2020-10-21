@@ -26,11 +26,11 @@ export class DatastorageService {
     return !!this.localStorage;
   }
 
-  buyStock(stock: string, quantity: number, orderPrice: number) {
+  buyStock(stock: string, name: string, quantity: number, orderPrice: number) {
     if (this.isLocalStorageSupported) {
       let myStocks = JSON.parse(this.localStorage.getItem("myStocks")) || [];
       if (myStocks.length == 0) {
-        let order = { "ticker": stock, "quantity": quantity, "totalCost": orderPrice };
+        let order = { "ticker": stock, "name": name, "quantity": quantity, "totalCost": orderPrice };
         myStocks.push(order);
         this.localStorage.setItem("myStocks", JSON.stringify(myStocks));
         // this.subject.next(myStocks);
@@ -49,7 +49,7 @@ export class DatastorageService {
         }
         // new stock
         console.log("stock bought");
-        let order = { "ticker": stock, "quantity": quantity, "totalCost": orderPrice };
+        let order = { "ticker": stock, "name": name, "quantity": quantity, "totalCost": orderPrice };
         myStocks.push(order);
         myStocks.sort((a, b) => a.ticker.localeCompare(b.ticker));
         this.localStorage.setItem("myStocks", JSON.stringify(myStocks));
@@ -92,14 +92,14 @@ export class DatastorageService {
     return myStocks;
   }
 
-  addToWatchlist(ticker: string) {
+  addToWatchlist(ticker: string, companyName: string) {
     if (this.isLocalStorageSupported) {
       let myWatchlist = JSON.parse(this.localStorage.getItem("myWatchlist")) || [];
       // if (myWatchlist.length == 0){
 
       // }
-      myWatchlist.push(ticker);
-      myWatchlist.sort((a, b) => a.localeCompare(b));
+      myWatchlist.push({"ticker": ticker, "name": companyName});
+      myWatchlist.sort((a, b) => a.ticker.localeCompare(b.ticker));
       this.localStorage.setItem("myWatchlist", JSON.stringify(myWatchlist));
       this.subject.next(myWatchlist);
       return true;
@@ -113,7 +113,7 @@ export class DatastorageService {
       let myUpdatedWatchlist = [];
       let myWatchlist = this.seeWatchlist();
       for (let i = 0; i < myWatchlist.length; i++) {
-        if (myWatchlist[i] !== ticker) {
+        if (myWatchlist[i].ticker !== ticker) {
           myUpdatedWatchlist.push(myWatchlist[i]);
         }
       }

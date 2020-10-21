@@ -43,6 +43,7 @@ export class PortfolioComponent implements OnInit {
     }
     this.service.getCompanyLatestPrice(keyword).then((data) => {
       console.log("service called");
+      console.log(data);
       this.currentPriceOfStocks = data;
       this.isLoading = false;
     });

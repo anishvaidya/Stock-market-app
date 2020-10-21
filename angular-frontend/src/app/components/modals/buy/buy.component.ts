@@ -13,6 +13,7 @@ import { DatastorageService } from '../../../services/datastorage.service';
 export class BuyComponent implements OnInit {
 
   @Input() ticker;
+  @Input() name;
   @Input() public currentPriceLatest;
 
   quantity: FormControl = new FormControl();
@@ -47,7 +48,7 @@ export class BuyComponent implements OnInit {
 
   buyStock() {
 
-    let buyReceipt = this.dataStorage.buyStock(this.ticker, this.quantity.value, this.totalPrice);
+    let buyReceipt = this.dataStorage.buyStock(this.ticker, this.name, this.quantity.value, this.totalPrice);
     console.log("Successful purchase", buyReceipt);
   }
 

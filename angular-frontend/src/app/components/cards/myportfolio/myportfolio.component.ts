@@ -34,13 +34,13 @@ export class MyportfolioComponent implements OnInit {
         this.currentPrice = {"last": this.currentPriceOfStocks[i]["last"]};
       }
     }
-    // this.currentPrice = {"last": this.currentPriceOfStocks[this.portfolio.value.ticker]};
     console.log(this.currentPrice);
 }
 
   openBuyModal() {
     const modalRef = this.modalService.open(BuyComponent, { backdrop: 'static' });
     modalRef.componentInstance.ticker = this.portfolio.value.ticker;
+    modalRef.componentInstance.name = this.portfolio.value.name;
     modalRef.componentInstance.currentPriceLatest = this.currentPrice;
 
   }

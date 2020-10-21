@@ -1,1 +1,12 @@
-<p>watchlist works!</p>
+<div>My Watchlist</div>
+<mat-spinner diameter="50" *ngIf="isLoading && myWatchlist.length != 0"></mat-spinner>
+<div *ngIf="myWatchlist.length != 0">
+    <div *ngFor="let stock of myWatchlist | keyvalue">
+        <div *ngIf="currentPriceOfStocks.length != 0">
+            <app-mywatchlist [stock]="stock" [currentPriceOfStocks]="currentPriceOfStocks"></app-mywatchlist>
+        <br><br>
+        </div>
+        
+    </div>
+</div>
+<div *ngIf="myWatchlist.length == 0">Currently you don't have any stocks in your watchlist.</div>

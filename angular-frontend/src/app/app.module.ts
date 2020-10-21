@@ -23,6 +23,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuyComponent } from './components/modals/buy/buy.component';
 import { MyportfolioComponent } from './components/cards/myportfolio/myportfolio.component';
 import { SellComponent } from './components/modals/sell/sell.component';
+import { MywatchlistComponent } from './components/cards/mywatchlist/mywatchlist.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { SellComponent } from './components/modals/sell/sell.component';
     BuyComponent,
     MyportfolioComponent,
     SellComponent,
+    MywatchlistComponent,
     
   ],
   imports: [

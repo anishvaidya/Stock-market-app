@@ -1,0 +1,8 @@
+<div class="card watchlist-card" (click)="openStockDetails();">
+    <div>{{watchlistStock.ticker}}</div>
+    <div>{{change}}</div>
+    <div>{{changePercent}}%</div>
+    <button type="button" class="close" aria-label="Close" (click)="removeFromWatchlist();">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>

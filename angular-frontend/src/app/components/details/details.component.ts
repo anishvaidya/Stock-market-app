@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../../services/dataservice.service';
+import { DatastorageService } from '../../services/datastorage.service';
 
 
 // modal
@@ -33,7 +34,7 @@ export class DetailsComponent implements OnInit {
   isFilled;
 
 
-  constructor(private service: DataService, private router: Router, private modalService: NgbModal) {
+  constructor(private service: DataService, private router: Router, private modalService: NgbModal, private localStorage: DatastorageService) {
     this.companyDescription = null;
     this.latestPrice = null;
     this.isValid = true;
@@ -45,6 +46,7 @@ export class DetailsComponent implements OnInit {
     this.dailyChartDataID = null;
     this.currentPriceLatest = null;
     this.currentDateTimeID = null;
+    this.isFilled = false;
   }
 
   ngOnInit(): void {
@@ -59,6 +61,7 @@ export class DetailsComponent implements OnInit {
       console.log(this.companyDescription);
       if (Object.keys(this.companyDescription).length != 0) {
         console.log("this runs");
+        this.checkInWatchlist();
         this.getLatestPrice();
         this.latestPriceID = setInterval(() => this.getLatestPrice(), 15000);
       }
@@ -72,7 +75,7 @@ export class DetailsComponent implements OnInit {
   getLatestPrice() {
     console.log(Date.now());
     this.service.getCompanyLatestPrice(this.keyword).then((data) => {
-      this.latestPrice = data;
+      this.latestPrice = data[0];
       this.updateCurrentLatestPrice();
 
       // let startDate = new Date(this.latestPrice.timestamp).toLocaleDateString();
@@ -94,7 +97,7 @@ export class DetailsComponent implements OnInit {
       console.log(this.latestDateTime);
 
       // getting daily chart data
-      if (this.dailyChartData == null){
+      if (this.dailyChartData == null) {
         console.log("new API called for daily chart data");
         this.getDailyChartData();
       }
@@ -162,10 +165,10 @@ export class DetailsComponent implements OnInit {
   updateCurrentLatestPrice() {
     console.log("price updated");
     console.log("price was", this.latestPrice.last);
-    if (this.currentPriceLatest == null){
-      this.currentPriceLatest = {"last": this.latestPrice.last};
+    if (this.currentPriceLatest == null) {
+      this.currentPriceLatest = { "last": this.latestPrice.last };
     }
-    else{
+    else {
       this.currentPriceLatest.last = this.latestPrice.last;
     }
   }
@@ -173,18 +176,36 @@ export class DetailsComponent implements OnInit {
   openBuyModal() {
     const modalRef = this.modalService.open(BuyComponent, { backdrop: 'static' });
     modalRef.componentInstance.ticker = this.companyDescription.ticker;
+    modalRef.componentInstance.name = this.companyDescription.name;
     modalRef.componentInstance.currentPriceLatest = this.currentPriceLatest;
   }
 
-  toggleWatchlist(){
-    console.log("watchlist button clicked");
-    if (this.isFilled == "bi bi-star"){
-      this.isFilled = "bi bi-star-fill";
+  checkInWatchlist() {
+    let myWatchlist = this.localStorage.seeWatchlist();
+    console.log(myWatchlist);
+    for (let i = 0; i < myWatchlist.length; i++) {
+      console.log(myWatchlist[i]);
+      if (myWatchlist[i].ticker == this.companyDescription.ticker){
+        this.isFilled = true;
+      }
     }
-    
+    console.log("for looop ends");
   }
 
-  updateCurrentTime(){
+  toggleWatchlist() {
+    console.log("watchlist button clicked");
+    // this.isFilled = !this.isFilled;
+    if (this.isFilled) {
+      this.localStorage.removeFromWatchlist(this.companyDescription.ticker);
+    }
+    else {
+      this.localStorage.addToWatchlist(this.companyDescription.ticker, this.companyDescription.name);
+    }
+    this.isFilled = !this.isFilled;
+
+  }
+
+  updateCurrentTime() {
     // current date time
     let currentDateTime = new Date().toLocaleString('en-US', { hour12: false }).split(",");
     let currentDate = currentDateTime[0].split("/");
@@ -200,7 +221,7 @@ export class DetailsComponent implements OnInit {
       console.log("daily chart data API stopped");
       clearInterval(this.dailyChartDataID);
     }
-    if (this.currentDateTimeID != null){
+    if (this.currentDateTimeID != null) {
       console.log("current time interval deleted");
       clearInterval(this.currentDateTimeID);
     }

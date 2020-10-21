@@ -36,10 +36,11 @@ export class DataService {
     return fetchData.then((res) => res.json()).then((json) => {
       companyLatestPrice = json;
       // console.log(companyDescription);
-      if (companyLatestPrice.length > 1){
-        return companyLatestPrice;
-      }
-      return companyLatestPrice[0];
+      // if (companyLatestPrice.length > 1){
+      //   return companyLatestPrice;
+      // }
+      // return companyLatestPrice[0];
+      return companyLatestPrice;
     });
   }
 
