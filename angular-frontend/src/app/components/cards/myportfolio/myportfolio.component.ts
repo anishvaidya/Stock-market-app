@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from '../../../services/dataservice.service';
+import {Router} from '@angular/router';
 
 
 // modal
@@ -17,7 +18,7 @@ export class MyportfolioComponent implements OnInit {
   @Input() currentPriceOfStocks;
   currentPrice;
 
-  constructor(private service: DataService, private modalService: NgbModal) { }
+  constructor(private service: DataService, private modalService: NgbModal, private router: Router) { }
 
   ngOnInit(): void {
     // this.service.getCompanyLatestPrice(this.portfolio.value.ticker).then((data) => {
@@ -51,6 +52,11 @@ export class MyportfolioComponent implements OnInit {
     modalRef.componentInstance.stockPrice = this.currentPrice;
     modalRef.componentInstance.availableQuantity = this.portfolio.value.quantity;
     modalRef.componentInstance.currentTotalCost = this.portfolio.value.totalCost;
+  }
+
+  openStockDetails(){
+    console.log("card clicked");
+    this.router.navigate([`/details/${this.portfolio.value.ticker}`]);
   }
 
 }

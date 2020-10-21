@@ -19,11 +19,15 @@ import { MatInputModule } from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+// material tabs
+import {MatTabsModule} from '@angular/material/tabs';
+
 //modal
 import { BuyComponent } from './components/modals/buy/buy.component';
 import { MyportfolioComponent } from './components/cards/myportfolio/myportfolio.component';
 import { SellComponent } from './components/modals/sell/sell.component';
 import { MywatchlistComponent } from './components/cards/mywatchlist/mywatchlist.component';
+import { NewscardComponent } from './components/cards/newscard/newscard.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +42,7 @@ import { MywatchlistComponent } from './components/cards/mywatchlist/mywatchlist
     MyportfolioComponent,
     SellComponent,
     MywatchlistComponent,
+    NewscardComponent,
     
   ],
   imports: [
@@ -50,7 +55,8 @@ import { MywatchlistComponent } from './components/cards/mywatchlist/mywatchlist
     MatInputModule,
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
-    NgbModule
+    NgbModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

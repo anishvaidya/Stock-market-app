@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { DataService } from '../../services/dataservice.service';
 import { DatastorageService } from '../../services/datastorage.service';
 
-
 // modal
 import { BuyComponent } from '../modals/buy/buy.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
