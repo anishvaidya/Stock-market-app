@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+//modal
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {NewsmodalComponent} from '../../modals/newsmodal/newsmodal.component';
+
 @Component({
   selector: 'app-newscard',
   templateUrl: './newscard.component.html',
@@ -8,10 +12,17 @@ import { Component, OnInit, Input } from '@angular/core';
 export class NewscardComponent implements OnInit {
   @Input() news;
 
-  constructor() { }
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
     console.log(this.news);
+  }
+
+  openNewsModal(){
+    console.log(this.news.title, " clicked");
+    const modalRef = this.modalService.open(NewsmodalComponent, { backdrop: 'static' });
+    modalRef.componentInstance.news = this.news;
+
   }
 
 }

@@ -10,6 +10,10 @@ import { DetailsComponent } from './components/details/details.component';
 import { WatchlistComponent } from './components/watchlist/watchlist.component';
 import { PortfolioComponent } from './components/portfolio/portfolio.component';
 
+// fontawesome
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+
 // autocomplete practice
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,6 +32,7 @@ import { MyportfolioComponent } from './components/cards/myportfolio/myportfolio
 import { SellComponent } from './components/modals/sell/sell.component';
 import { MywatchlistComponent } from './components/cards/mywatchlist/mywatchlist.component';
 import { NewscardComponent } from './components/cards/newscard/newscard.component';
+import { NewsmodalComponent } from './components/modals/newsmodal/newsmodal.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +48,7 @@ import { NewscardComponent } from './components/cards/newscard/newscard.componen
     SellComponent,
     MywatchlistComponent,
     NewscardComponent,
+    NewsmodalComponent,
     
   ],
   imports: [
@@ -56,7 +62,8 @@ import { NewscardComponent } from './components/cards/newscard/newscard.componen
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
     NgbModule,
-    MatTabsModule
+    MatTabsModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent],
