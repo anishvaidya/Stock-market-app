@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl } from '@angular/forms';
 
@@ -15,6 +15,8 @@ export class BuyComponent implements OnInit {
   @Input() ticker;
   @Input() name;
   @Input() public currentPriceLatest;
+
+  @Output() buyReceipt: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   quantity: FormControl = new FormControl();
   totalPrice;
@@ -50,6 +52,7 @@ export class BuyComponent implements OnInit {
 
     let buyReceipt = this.dataStorage.buyStock(this.ticker, this.name, this.quantity.value, this.totalPrice);
     console.log("Successful purchase", buyReceipt);
+    this.buyReceipt.emit(buyReceipt);
   }
 
   ngOnDestroy(){

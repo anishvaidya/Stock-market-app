@@ -22,7 +22,7 @@ export class PortfolioComponent implements OnInit {
 
   ngOnInit(): void {
     this.myPortfolios = this.dataStorage.getStocks();
-    // console.log(this.myPortfolios);
+    console.log(this.myPortfolios);
     this.generateCurrentPrice();
 
     this.dataStorage.watchStorage().subscribe((data) => {

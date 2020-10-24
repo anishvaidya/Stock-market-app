@@ -39,7 +39,8 @@ export class MyportfolioComponent implements OnInit {
 }
 
   openBuyModal() {
-    const modalRef = this.modalService.open(BuyComponent, { backdrop: 'static' });
+    // const modalRef = this.modalService.open(BuyComponent, { backdrop: 'static' });
+    const modalRef = this.modalService.open(BuyComponent);
     modalRef.componentInstance.ticker = this.portfolio.value.ticker;
     modalRef.componentInstance.name = this.portfolio.value.name;
     modalRef.componentInstance.currentPriceLatest = this.currentPrice;
@@ -47,7 +48,8 @@ export class MyportfolioComponent implements OnInit {
   }
 
   openSellModal(){
-    const modalRef = this.modalService.open(SellComponent, { backdrop: 'static' });
+    // const modalRef = this.modalService.open(SellComponent, { backdrop: 'static' });
+    const modalRef = this.modalService.open(SellComponent);
     modalRef.componentInstance.ticker = this.portfolio.value.ticker;
     modalRef.componentInstance.stockPrice = this.currentPrice;
     modalRef.componentInstance.availableQuantity = this.portfolio.value.quantity;

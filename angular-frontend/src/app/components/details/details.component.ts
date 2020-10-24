@@ -7,6 +7,12 @@ import { DatastorageService } from '../../services/datastorage.service';
 import { BuyComponent } from '../modals/buy/buy.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+// highcharts
+import * as Highcharts from "highcharts/highstock";
+import { Options } from "highcharts/highstock";
+
+import { DomSanitizer } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -31,9 +37,23 @@ export class DetailsComponent implements OnInit {
   currentDateTime;
   currentDateTimeID;
   isFilled;
+  change;
+  changePercent;
+  changeColor;
+
+  // alerts new
+  showAddWatchlist = false;
+  showRemoveWatchlist = false;
+  showBuy = false;
+
+  // for charts
+  chartOptions: Options;
+  Highcharts: typeof Highcharts = Highcharts;
+  dailyChartPrice = [];
+  chartUpdateFlag = false;
 
 
-  constructor(private service: DataService, private router: Router, private modalService: NgbModal, private localStorage: DatastorageService) {
+  constructor(private service: DataService, private router: Router, private modalService: NgbModal, private localStorage: DatastorageService, private sanitizer:DomSanitizer) {
     this.companyDescription = null;
     this.latestPrice = null;
     this.isValid = true;
@@ -46,12 +66,17 @@ export class DetailsComponent implements OnInit {
     this.currentPriceLatest = null;
     this.currentDateTimeID = null;
     this.isFilled = false;
+
+
   }
 
   ngOnInit(): void {
     this.retrieveData();
     this.updateCurrentTime();
     this.currentDateTimeID = setInterval(() => this.updateCurrentTime(), 15000);
+
+    // $('.alert').alert('close')
+
   }
 
   retrieveData() {
@@ -60,6 +85,8 @@ export class DetailsComponent implements OnInit {
       console.log(this.companyDescription);
       if (Object.keys(this.companyDescription).length != 0) {
         console.log("this runs");
+
+        this.buildChart();
         this.checkInWatchlist();
         this.getLatestPrice();
         this.latestPriceID = setInterval(() => this.getLatestPrice(), 15000);
@@ -75,6 +102,19 @@ export class DetailsComponent implements OnInit {
     console.log(Date.now());
     this.service.getCompanyLatestPrice(this.keyword).then((data) => {
       this.latestPrice = data[0];
+
+      this.change = this.latestPrice.last - this.latestPrice.prevClose;
+      this.changePercent = (this.change * 100 / this.latestPrice.prevClose);
+      if (this.change > 0) {
+        this.changeColor = "green";
+      }
+      else if (this.change < 0) {
+        this.changeColor = "red";
+      }
+      else {
+        this.changeColor = "black";
+      }
+
       this.updateCurrentLatestPrice();
 
       // let startDate = new Date(this.latestPrice.timestamp).toLocaleDateString();
@@ -102,7 +142,8 @@ export class DetailsComponent implements OnInit {
       }
       if (this.dailyChartDataID == null) {
         console.log("daily chart interval set");
-        this.dailyChartDataID = setInterval(() => this.getDailyChartData(), (1000 * 60 * 4));
+        // this.dailyChartDataID = setInterval(() => this.getDailyChartData(), (1000 * 60 * 4));
+        this.dailyChartDataID = setInterval(() => this.getDailyChartData(), (1000 * 15));
       }
 
 
@@ -129,7 +170,7 @@ export class DetailsComponent implements OnInit {
     this.service.getDailyChartData(this.keyword, this.latestDate).then((data) => {
       this.dailyChartData = data;
       console.log(this.dailyChartData);
-
+      this.updateDailyChartPrice();
       // remove loading
       if (this.companyDescription != null && this.latestPrice != null && this.dailyChartData != null) {
         this.isLoading = false;
@@ -173,10 +214,23 @@ export class DetailsComponent implements OnInit {
   }
 
   openBuyModal() {
-    const modalRef = this.modalService.open(BuyComponent, { backdrop: 'static' });
+    // const modalRef = this.modalService.open(BuyComponent, { backdrop: 'static' });
+    const modalRef = this.modalService.open(BuyComponent);
     modalRef.componentInstance.ticker = this.companyDescription.ticker;
     modalRef.componentInstance.name = this.companyDescription.name;
     modalRef.componentInstance.currentPriceLatest = this.currentPriceLatest;
+
+    modalRef.componentInstance.buyReceipt.subscribe(($e) => {
+      console.log($e, "receipt in parent");
+      // this.buyAlert = this.buyAlertBought;
+      if ($e){
+        this.showBuy = true;
+      setTimeout(() => {
+        this.showBuy = false;
+      }, 5000);
+      }
+      
+    });
   }
 
   checkInWatchlist() {
@@ -184,7 +238,7 @@ export class DetailsComponent implements OnInit {
     console.log(myWatchlist);
     for (let i = 0; i < myWatchlist.length; i++) {
       console.log(myWatchlist[i]);
-      if (myWatchlist[i].ticker == this.companyDescription.ticker){
+      if (myWatchlist[i].ticker == this.companyDescription.ticker) {
         this.isFilled = true;
       }
     }
@@ -196,9 +250,19 @@ export class DetailsComponent implements OnInit {
     // this.isFilled = !this.isFilled;
     if (this.isFilled) {
       this.localStorage.removeFromWatchlist(this.companyDescription.ticker);
+      this.showAddWatchlist = false;
+      this.showRemoveWatchlist = true;
+      setTimeout(() => {
+        this.showRemoveWatchlist = false;
+      }, 5000);
     }
     else {
       this.localStorage.addToWatchlist(this.companyDescription.ticker, this.companyDescription.name);
+      this.showRemoveWatchlist = false;
+      this.showAddWatchlist = true;
+      setTimeout(() => {
+        this.showAddWatchlist = false;
+      }, 5000);
     }
     this.isFilled = !this.isFilled;
 
@@ -225,4 +289,100 @@ export class DetailsComponent implements OnInit {
       clearInterval(this.currentDateTimeID);
     }
   }
+
+
+
+  // Daily chart highcharts
+  updateDailyChartPrice() {
+    this.dailyChartPrice = [];
+    for (let i = 0; i < this.dailyChartData.length; i++) {
+      this.dailyChartPrice.push([new Date(this.dailyChartData[i].date).getTime(), this.dailyChartData[i].close]);
+    }
+    this.chartOptions.plotOptions.series['color'] = this.changeColor;
+    this.chartOptions.series[0]['data'] = this.dailyChartPrice;
+    this.chartOptions.series[0]['name'] = this.companyDescription.ticker;
+    this.chartOptions.title['text'] = this.companyDescription.ticker;
+    // this.chartOptions.series[0] = {
+    //   name: this.companyDescription.ticker,
+    //   type: 'line',
+    //   data: this.dailyChartPrice,
+    // }
+    // this.chartOptions.title = {
+    //   // text: this.companyDescription.ticker,
+    //   text: String(Date.now())
+    // }
+    // this.chartOptions.plotOptions = {
+    //   series: {
+    //     color: this.changeColor,
+    //   }
+    // }
+    this.chartUpdateFlag = true;
+    console.log(this.dailyChartPrice);
+  }
+
+  buildChart() {
+    this.chartOptions = {
+      title: {
+        text: "ANISH",
+      },
+      rangeSelector: {
+        enabled: false
+      },
+      plotOptions: {
+        series: {
+          color: 'black'
+        }
+      },
+      time: {
+        timezoneOffset: new Date(Date.now()).getTimezoneOffset(),
+      },
+      series: [
+        {
+          name: "ANISH",
+          type: 'line',
+          // pointInterval: 60 * 4 * 1000,
+          data: [],
+        }
+      ]
+    };
+  }
+
+  closeWatchlistAlert(){
+    this.showAddWatchlist = false;
+    this.showRemoveWatchlist=false;
+  }
+
+  closeBuyAlert(){
+    this.showBuy = false;
+  }
+
+
+  // Highcharts: typeof Highcharts = Highcharts;
+  // chartOptions: Options = {
+  //   title: {
+  //     text: this.title,
+  //   },
+  //   rangeSelector: {
+  //     inputEnabled: false,
+  //     buttonTheme: {
+  //       visibility: 'hidden'
+  //     },
+  //     labelStyle: {
+  //       visibility: 'hidden'
+  //     }
+  //   },
+
+  //   time: {
+  //     timezoneOffset: new Date(Date.now()).getTimezoneOffset(),
+  //   },
+  //   series: [
+  //     {
+  //       name: this.title,
+  //       type: 'line',
+  //       data: this.dailyChartPrice
+  //     }
+  //   ]
+  // };
+
+
 }

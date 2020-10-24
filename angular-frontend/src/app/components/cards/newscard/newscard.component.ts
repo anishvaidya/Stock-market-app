@@ -20,7 +20,8 @@ export class NewscardComponent implements OnInit {
 
   openNewsModal(){
     console.log(this.news.title, " clicked");
-    const modalRef = this.modalService.open(NewsmodalComponent, { backdrop: 'static' });
+    // const modalRef = this.modalService.open(NewsmodalComponent, { backdrop: 'static' });
+    const modalRef = this.modalService.open(NewsmodalComponent);
     modalRef.componentInstance.news = this.news;
 
   }

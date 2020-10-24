@@ -34,6 +34,10 @@ import { MywatchlistComponent } from './components/cards/mywatchlist/mywatchlist
 import { NewscardComponent } from './components/cards/newscard/newscard.component';
 import { NewsmodalComponent } from './components/modals/newsmodal/newsmodal.component';
 
+// highcharts
+import { HighchartsChartModule } from 'highcharts-angular';
+import { ChartComponent } from './components/chart/chart.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +53,7 @@ import { NewsmodalComponent } from './components/modals/newsmodal/newsmodal.comp
     MywatchlistComponent,
     NewscardComponent,
     NewsmodalComponent,
+    ChartComponent,
     
   ],
   imports: [
@@ -63,7 +68,8 @@ import { NewsmodalComponent } from './components/modals/newsmodal/newsmodal.comp
     MatProgressSpinnerModule,
     NgbModule,
     MatTabsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    HighchartsChartModule
   ],
   providers: [],
   bootstrap: [AppComponent],

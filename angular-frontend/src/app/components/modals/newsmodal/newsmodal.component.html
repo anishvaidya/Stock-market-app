@@ -1,6 +1,6 @@
 <div>
     <div>
-        <div cdkFocusInitial>{{news.source.name}}</div>
+        <div>{{news.source.name}}</div>
         <div>{{news.publishedAt | date: 'longDate'}}</div>
         <div>
             <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')" tabindex="-1">
@@ -20,5 +20,3 @@
         <fa-icon [icon]="facebookIcon"></fa-icon>
       </a>
 </div>
-
-<!-- <i class="fab fa-twitter"></i> -->

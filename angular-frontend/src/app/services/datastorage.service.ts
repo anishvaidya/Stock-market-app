@@ -15,7 +15,8 @@ export class DatastorageService {
 
   constructor() {
     this.localStorage = window.localStorage;
-
+    // this.localStorage.setItem("myStocks", JSON.stringify([]));
+    // this.localStorage.setItem("myWatchlist", JSON.stringify([]));
   }
 
   watchStorage(): Observable<any> {
