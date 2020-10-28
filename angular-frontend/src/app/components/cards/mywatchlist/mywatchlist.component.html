@@ -1,8 +1,39 @@
 <div class="card watchlist-card" (click)="openStockDetails();">
-    <div>{{watchlistStock.ticker}}</div>
-    <div>{{change}}</div>
-    <div>{{changePercent}}%</div>
-    <button type="button" class="close" aria-label="Close" (click)="removeFromWatchlist();">
-        <span aria-hidden="true">&times;</span>
-    </button>
+    <div>
+        <button type="button" class="close cross-button" aria-label="Close" (click)="removeFromWatchlist();">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="card-body" style="padding-top: 0px;">
+        <div class="columnleft">
+            <div class="row1">{{watchlistStock.ticker}}</div>
+            <div>{{stock.value.name}}</div>
+        </div>
+        <div class="columnright" [ngClass]="{showgreen: change > 0, showred: change < 0}">
+            <div class="row1">{{watchlistStock.last | number : '1.2-2'}}</div>
+            <div class="row2"><div *ngIf="change > 0"><div *ngTemplateOutlet="up"></div></div>
+            <div *ngIf="change < 0"><div *ngTemplateOutlet="down"></div></div>
+            &nbsp;{{change | number : '1.2-2'}} ({{changePercent | number : '1.2-2'}}%)</div>
+        </div>
+    </div>
 </div>
+
+<!-- green up -->
+<ng-template #up>
+
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-up-fill" fill="green"
+    xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+</svg>
+</ng-template>
+
+
+<!-- red down -->
+<ng-template #down>
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="red"
+    xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+</svg>
+</ng-template>

@@ -1,11 +1,70 @@
-<div class="card">
-    <div class="card-header" (click)="openStockDetails();">{{portfolio.value.ticker}}</div>
+<div class="card portfolio-card">
+    <div class="card-header portfolio-header" (click)="openStockDetails();">
+        <div
+            style="font-weight: 500; font-size: 24px; display: flex; justify-content: flex-end; align-items: flex-end;">
+            {{portfolio.value.ticker}}</div>&nbsp;&nbsp;
+        <div style="color: gray; font-weight: 500; font-size: 18px; height: fit-content; padding-top: 6px;">
+            {{portfolio.value.name}}</div>
+    </div>
     <div class="card-body">
-        <div>{{portfolio.value.quantity}}</div>
-        <div>{{portfolio.value.totalCost}}</div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="column-left">
+                <div>Quantity:</div>
+                <div>Avg. Cost / Share:</div>
+                <div>Total Cost:</div>
+            </div>
+            <div class="column-right">
+                <div>{{portfolio.value.quantity}}</div>
+                <div>{{portfolio.value.totalCost / portfolio.value.quantity | number : '1.2-2'}}</div>
+                <div>{{portfolio.value.totalCost | number : '1.2-2'}}</div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6" style="float: right;">
+            <div class="column-left">
+                <div>Change:</div>
+                <div>Current Price:</div>
+                <div>Market Value:</div>
+            </div>
+            <div class="column-right" [ngClass]="{showgreen: change > 0, showred: change < 0}">
+                <div class="row1">
+                        <div *ngIf="change > 0">
+                            <div *ngTemplateOutlet="up"></div>
+                        </div>
+                        <div *ngIf="change < 0">
+                            <div *ngTemplateOutlet="down"></div>
+                        </div>&nbsp;
+                        <div>{{change | number : '1.2-2'}}</div>
+                </div>
+                <div>{{currentPrice.last | number : '1.2-2'}}</div>
+                <div>{{portfolio.value.quantity * currentPrice.last | number : '1.2-2'}}</div>
+            </div>
+        </div>
+
     </div>
     <div class="card-footer">
-        <button class="btn btn-primary" (click)="openBuyModal();">Buy</button>
-        <button class="btn btn-danger" (click)="openSellModal();">Sell</button>
+        <div class="my-footer">
+            <button class="btn btn-primary" (click)="openBuyModal();" style="margin-right: 15px;">Buy</button>
+            <button class="btn btn-danger" (click)="openSellModal();">Sell</button>
+        </div>
     </div>
 </div>
+
+<!-- green up -->
+<ng-template #up>
+
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-up-fill" fill="green"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+    </svg>
+</ng-template>
+
+
+<!-- red down -->
+<ng-template #down>
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="red"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+    </svg>
+</ng-template>

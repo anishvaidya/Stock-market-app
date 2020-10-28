@@ -1,1 +1,32 @@
-<div>navbar works!</div>
+<!-- collapsible navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+    <a class="navbar-brand" [routerLink]="'.'" style="color: white;">Stock Search</a>
+
+    <!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+        &#9776;
+    </button>
+    <!-- Step 2: Add the ngbCollapse directive to the element below. -->
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end text-right">
+        <ul ngbNav class="navbar-nav" [(activeId)]="active">
+            <li class="nav-item" [ngbNavItem]="1" >
+                <!-- Step 4: Close the menu when a link is clicked. -->
+                <a class="nav-link" [routerLink]="'.'" (click)="isMenuCollapsed = true; navSet1Active();" [ngClass]="{
+                    'active-button': active1}" style="color: lightgrey; padding-left: 15px !important;
+                    padding-right: 15px !important;">Search</a>
+            </li>
+            <li class="nav-item" [ngbNavItem]="2" >
+                <a class="nav-link" [routerLink]="'watchlist'"
+                    (click)="isMenuCollapsed = true; navSet2Active();" [ngClass]="{
+                        'active-button': active2}" style="color: lightgrey; padding-left: 15px !important;
+                        padding-right: 15px !important;">Watchlist</a>
+            </li>
+            <li class="nav-item" [ngbNavItem]="3">
+                <a class="nav-link" [routerLink]="'portfolio'"
+                    (click)="isMenuCollapsed = true; navSet3Active();" [ngClass]="{
+                        'active-button': active3}" style="color: lightgrey; padding-left: 15px !important;
+                        padding-right: 15px !important;">Portfolio</a>
+            </li>
+        </ul>
+    </div>
+</nav>

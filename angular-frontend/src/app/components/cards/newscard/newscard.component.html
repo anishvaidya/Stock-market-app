@@ -1,3 +1,25 @@
-<div class="card" (click)="openNewsModal()">
-    {{news.title}}
+<!-- <div class="card" (click)="openNewsModal()" style="background-color: rgb(252, 252, 252);">
+    <div class="card-body container" style="vertical-align: middle; height: max-content;">
+        <div class="row">
+            <div class="column col-xs-12 col-sm-12 col-md-3 col-lg-3"><img class="img-fluid" src="{{news.urlToImage}}" alt="Not Found"></div>
+            <div class="column col-xs-12 col-sm-12 col-md-9 col-lg-9 card-text" style="width: calc(100% - 110px); padding-left: 15px;">{{news.title}}</div>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="card" (click)="openNewsModal()" style="background-color: rgb(252, 252, 252);">
+    <div class="card-body container" style="vertical-align: middle; height: max-content;">
+        <div class="row">
+            <div class="column col-xs-12 col-sm-12 col-md-3 col-lg-3" style="padding: 12px">
+                <img class="card-img-top" src="{{news.urlToImage}}" alt="Not Found" style="width:100%">
+            </div>
+            <div class="column col-xs-12 col-sm-12 col-md-9 col-lg-9 card-text" style="padding-left:12px; padding-right:12px">{{news.title}}</div>
+        </div>
+    </div>
 </div>
+
+<!-- <div class="card-body" style="display: inline-block;">
+        <div><img src="{{news.urlToImage}}" alt=""></div>
+        <div class="news-title">{{news.title}}</div>
+    </div> -->

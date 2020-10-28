@@ -27,6 +27,9 @@ const routes: Routes = [
   {
     path: 'watchlist',
     component: WatchlistComponent,
+  },
+  {
+    path: '**', component: SearchComponent,
   }
 
 ];

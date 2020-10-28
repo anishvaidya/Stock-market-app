@@ -27,8 +27,9 @@ export class ChartComponent implements OnInit {
   ngOnInit(): void {
     for (let i = 0; i < this.companyHistoricalData.length; i++) {
       this.volumeList.push([new Date(this.companyHistoricalData[i].date).getTime(), this.companyHistoricalData[i].volume]);
-      this.ohlcList.push([new Date(this.companyHistoricalData[i].date).getTime(), this.companyHistoricalData[i].open, this.companyHistoricalData[i].high, this.companyHistoricalData[i].low, this.companyHistoricalData[i].close]);
+      this.ohlcList.push([new Date(this.companyHistoricalData[i].date).getTime(), Number(this.companyHistoricalData[i].open.toFixed(2)), Number(this.companyHistoricalData[i].high.toFixed(2)), Number(this.companyHistoricalData[i].low.toFixed(2)), Number(this.companyHistoricalData[i].close.toFixed(2))]);
     }
+    
     console.log(this.volumeList);
     console.log(this.ohlcList);
     this.buildChart();

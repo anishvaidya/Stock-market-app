@@ -11,7 +11,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as Highcharts from "highcharts/highstock";
 import { Options } from "highcharts/highstock";
 
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-details',
@@ -41,6 +40,13 @@ export class DetailsComponent implements OnInit {
   changePercent;
   changeColor;
 
+  mid;
+  askPrice;
+  askSize;
+  bidPrice;
+  bidSize;
+
+
   // alerts new
   showAddWatchlist = false;
   showRemoveWatchlist = false;
@@ -53,7 +59,7 @@ export class DetailsComponent implements OnInit {
   chartUpdateFlag = false;
 
 
-  constructor(private service: DataService, private router: Router, private modalService: NgbModal, private localStorage: DatastorageService, private sanitizer:DomSanitizer) {
+  constructor(private service: DataService, private router: Router, private modalService: NgbModal, private localStorage: DatastorageService) {
     this.companyDescription = null;
     this.latestPrice = null;
     this.isValid = true;
@@ -80,6 +86,12 @@ export class DetailsComponent implements OnInit {
   }
 
   retrieveData() {
+    if (this.keyword == undefined) {
+      console.log("empty keyword");
+      this.isValid = false;
+      this.isLoading = false;
+      return;
+    }
     this.service.getCompanyDescription(this.keyword).then((data) => {
       this.companyDescription = data;
       console.log(this.companyDescription);
@@ -102,9 +114,37 @@ export class DetailsComponent implements OnInit {
     console.log(Date.now());
     this.service.getCompanyLatestPrice(this.keyword).then((data) => {
       this.latestPrice = data[0];
-
-      this.change = this.latestPrice.last - this.latestPrice.prevClose;
-      this.changePercent = (this.change * 100 / this.latestPrice.prevClose);
+      this.mid = this.latestPrice.mid;
+      this.askPrice = this.latestPrice.askPrice;
+      this.askSize = this.latestPrice.askSize;
+      this.bidPrice = this.latestPrice.bidPrice;
+      this.bidSize = this.latestPrice.bidSize;
+      if(this.mid == null){
+        this.mid = "-";
+      }
+      else{
+        this.mid = Number(this.mid.toFixed(2));
+      }
+      // if (this.latestPrice.askPrice == null){
+      //   this.askPrice = "-";
+      // }
+      // else{
+      //   this.askPrice = this.latestPrice.askPrice;
+      // }
+      if (this.askPrice != null){
+        this.askPrice = this.askPrice.toFixed(2);
+      }
+      if (this.askSize != null){
+        this.askSize = this.askSize.toFixed(2);
+      }
+      if (this.bidPrice != null){
+        this.bidPrice = this.bidPrice.toFixed(2);
+      }
+      if (this.bidSize != null){
+        this.bidSize = this.bidSize.toFixed(2);
+      }
+      this.change = (this.latestPrice.last - this.latestPrice.prevClose).toFixed(2);
+      this.changePercent = (this.change * 100 / this.latestPrice.prevClose).toFixed(2);
       if (this.change > 0) {
         this.changeColor = "green";
       }
@@ -155,6 +195,10 @@ export class DetailsComponent implements OnInit {
       console.log(new Date(this.latestPrice.timestamp).getTime());
       if (Math.abs(browserTime - APITime) <= (60 * 1000)) {
         this.isMarketOpen = true;
+        // manually close market
+        // this.isMarketOpen = false;
+        // clearInterval(this.latestPriceID);
+        // clearInterval(this.dailyChartDataID);
         console.log("market is open");
       }
       else {
@@ -170,7 +214,12 @@ export class DetailsComponent implements OnInit {
     this.service.getDailyChartData(this.keyword, this.latestDate).then((data) => {
       this.dailyChartData = data;
       console.log(this.dailyChartData);
+
+      this.buildChart();
       this.updateDailyChartPrice();
+      this.resize();
+
+      // window.setTimeout(function(){ $(window).trigger('resize'); }, 500);
       // remove loading
       if (this.companyDescription != null && this.latestPrice != null && this.dailyChartData != null) {
         this.isLoading = false;
@@ -296,12 +345,14 @@ export class DetailsComponent implements OnInit {
   updateDailyChartPrice() {
     this.dailyChartPrice = [];
     for (let i = 0; i < this.dailyChartData.length; i++) {
-      this.dailyChartPrice.push([new Date(this.dailyChartData[i].date).getTime(), this.dailyChartData[i].close]);
+      this.dailyChartPrice.push([new Date(this.dailyChartData[i].date).getTime(), Number(this.dailyChartData[i].close.toFixed(2))]);
     }
+    console.log(this.dailyChartPrice, "check this");
     this.chartOptions.plotOptions.series['color'] = this.changeColor;
     this.chartOptions.series[0]['data'] = this.dailyChartPrice;
     this.chartOptions.series[0]['name'] = this.companyDescription.ticker;
     this.chartOptions.title['text'] = this.companyDescription.ticker;
+
     // this.chartOptions.series[0] = {
     //   name: this.companyDescription.ticker,
     //   type: 'line',
@@ -322,6 +373,12 @@ export class DetailsComponent implements OnInit {
 
   buildChart() {
     this.chartOptions = {
+      
+      chart: {
+        type: 'line',
+        // width: 400,
+        reflow: true,
+    },
       title: {
         text: "ANISH",
       },
@@ -384,5 +441,12 @@ export class DetailsComponent implements OnInit {
   //   ]
   // };
 
+  resize(){
+    console.log("resize called");
+    // window.dispatchEvent(new Event('resize'));
+    //   window.resizeTo(window.screen.availWidth*(0.5), window.screen.availHeight*(0.5));
+    let element:HTMLElement = document.getElementById('batman') as HTMLElement;
+    element.click();
+  }
 
 }

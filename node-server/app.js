@@ -3,12 +3,16 @@ const express = require('express');
 const cors = require('cors');
 const api = require('./API/api');
 
+// serve html
+const bodyParser = require("body-parser");
+
 const app = express();
 
 const corsOptions = {
     "origin": "*"
 };
 app.use((cors(corsOptions)));
+
 
 
 
@@ -69,8 +73,18 @@ app.get('/getNewsData', (request, response) => {
     api.getNewsData(keyword, response);
 });
 
+// serve html
+app.use(express.static('public'));
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(process.cwd()+"/public/angular-frontend/"));
+app.get('*', (req,res) => {
+    res.sendFile(process.cwd()+"/public/angular-frontend/")
+  });
 
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8088;
 app.listen(port, () => console.log(`Listening on port ${port}`));

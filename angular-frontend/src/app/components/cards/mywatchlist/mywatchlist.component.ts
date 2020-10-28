@@ -28,8 +28,8 @@ export class MywatchlistComponent implements OnInit {
         break;
       }
     }
-    this.change = this.watchlistStock.last - this.watchlistStock.prevClose;
-    this.changePercent = (this.change * 100) / this.watchlistStock.prevClose;
+    this.change = (this.watchlistStock.last - this.watchlistStock.prevClose).toFixed(2);
+    this.changePercent = ((this.change * 100) / this.watchlistStock.prevClose).toFixed(2);
   }
 
   removeFromWatchlist(){

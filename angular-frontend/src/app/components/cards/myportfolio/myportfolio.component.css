@@ -1,3 +1,53 @@
 .card-header{
     cursor: pointer;
 }
+
+.portfolio-card{
+    margin-bottom: 20px;
+}
+
+.portfolio-header{
+    display: flex;
+    float: left;
+}
+
+.showgreen{
+    color: green;
+}
+
+.showred{
+    color: red;
+}
+
+.column{
+    font-size: 17px;
+    width: 49%;
+    float: left;
+}
+
+.column-left{
+    width: 50%;
+    float: left;
+    text-align: left;
+
+}
+
+.column-right{
+    width: 50%;
+    float: left;
+    text-align: right;
+}
+
+.row1{
+    /* color: hotpink; */
+    justify-content: flex-end;
+    width: 100%;
+    display: flex;
+    float: right;
+}
+
+.my-footer{
+    width: fit-content;
+    display: flex;
+    float: right;
+}

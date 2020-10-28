@@ -34,6 +34,7 @@ export class SearchComponent implements OnInit {
         }
         else{
           this.suggestions = [];
+          this.isLoading = false;
         }
       }
     );

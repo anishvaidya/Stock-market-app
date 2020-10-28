@@ -1,0 +1,18 @@
+.navbar {
+    background-color: #6f3aef !important;
+    /* height: 60px; */
+}
+
+.navbar-toggler{
+    color: lightgrey !important;
+}
+
+.active-button {
+    color: white !important;
+    border: white solid 2px;
+    border-radius: 15px;
+}
+
+a:hover{
+    color: rgb(243, 241, 241) !important;
+}

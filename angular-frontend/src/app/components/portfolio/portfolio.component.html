@@ -1,13 +1,23 @@
-<div>My Portfolio</div>
+<div class="portfolio-container">
+    <div class="portfolio-title">My Portfolio</div>
+    <mat-spinner diameter="50" *ngIf="isLoading && myPortfolios.length != 0" class="loader"></mat-spinner>
+    <div *ngIf="myPortfolios.length != 0">
+        <div *ngFor="let portfolio of myPortfolios | keyvalue">
+            <div *ngIf="currentPriceOfStocks.data.length != 0">
+                <app-myportfolio [portfolio]="portfolio" [currentPriceOfStocks]="currentPriceOfStocks"></app-myportfolio>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="myPortfolios.length == 0"><div class="alert alert-warning" role="alert" style="text-align: center;">
+        Currently you don't have any stock.
+      </div></div>
+
+</div>
+
+<!-- <div>My Portfolio</div>
 <mat-spinner diameter="50" *ngIf="isLoading && myPortfolios.length != 0"></mat-spinner>
 <div *ngIf="myPortfolios.length != 0">
     <div *ngFor="let portfolio of myPortfolios | keyvalue">
-        <!-- <div class="card">
-            <div (click)="Click()">{{portfolio.value.ticker}}</div>
-            <div>{{portfolio.value.quantity}}</div>
-            <div>{{portfolio.value.totalCost}}</div>
-            <button class="btn btn-primary" (click)="openBuyModal();">Buy</button>
-        </div> -->
         <div *ngIf="currentPriceOfStocks.length != 0">
             <app-myportfolio [portfolio]="portfolio" [currentPriceOfStocks]="currentPriceOfStocks"></app-myportfolio>
         <br><br>
@@ -15,4 +25,4 @@
         
     </div>
 </div>
-<div *ngIf="myPortfolios.length == 0">You have no stocks</div>
+<div *ngIf="myPortfolios.length == 0">You have no stocks</div> -->

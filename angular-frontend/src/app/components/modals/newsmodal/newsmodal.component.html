@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <div>
         <div>{{news.source.name}}</div>
         <div>{{news.publishedAt | date: 'longDate'}}</div>
@@ -19,4 +19,34 @@
     <a href="{{facebookURL}}" target="_blank">
         <fa-icon [icon]="facebookIcon"></fa-icon>
       </a>
+</div> -->
+
+<div #content>
+    <div class="modal-header" style="display: block;">
+        <div style="width: 100%; display: flex;">
+            <h3 class="modal-title" id="modal-basic-title">{{news.source.name}}</h3>
+            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"
+                tabindex="-1">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div style="color:grey; font-weight: 500;">{{news.publishedAt | date: 'longDate'}}</div>
+    </div>
+    <div class="modal-body">
+        <div style="font-weight: 500; font-size: large;">{{news.title}}</div>
+        <div [innerHTML]="news.description" style="font-size: small;"></div>
+        <div style="font-size: small; color: grey;">For more details click <a href="{{news.url}}"
+                target="_blank">here</a></div>
+    </div>
+    <div style="display: block; border: 1px solid lightgrey; border-radius: 3px; width: 92%; margin: auto; margin-bottom: 20px;">
+        <div style="padding: 10px;">Share</div>
+        <div style="padding-left: 10px; padding-bottom: 10px;">
+            <a class="twitter-share-button" target="_blank" href="{{twitterURL}}">
+                <fa-icon [icon]="twitterIcon" size="2x"></fa-icon>
+            </a>&nbsp;&nbsp;
+            <a href="{{facebookURL}}" target="_blank">
+                <fa-icon [icon]="facebookIcon" size="2x"></fa-icon>
+            </a>
+        </div>
+    </div>
 </div>

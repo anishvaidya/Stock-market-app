@@ -1,0 +1,14 @@
+.portfolio-container{
+    /* width: 100vw; */
+    width: 80%;
+    margin: auto;
+}
+
+.portfolio-title{
+    /* width: 80%; */
+    font-size: 30px;
+    font-weight: 500;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}

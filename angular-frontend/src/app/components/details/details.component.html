@@ -1,59 +1,212 @@
-<p>details works!</p>
-<mat-spinner diameter="50" *ngIf="isLoading && isValid"></mat-spinner>
+<div class="details-container">
+  <mat-spinner diameter="50" *ngIf="isLoading && isValid" class="loader"></mat-spinner>
+  <div *ngIf="!isValid">
+    <br>
+    <div class="alert alert-danger alert-dismissible" style="text-align: center;">No results found. Please enter a valid
+      Ticker.</div>
+  </div>
+  <div *ngIf="!isLoading && isValid">
+    <ng-container *ngIf="showAddWatchlist">
+      <div class="alert alert-success alert-dismissible fade show" role="alert" style="text-align: center;">
+        <button type="button" id="walert" class="close" data-dismiss="alert" aria-label="Close"
+          (click)="closeWatchlistAlert()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div>{{companyDescription.ticker}} added to Watchlist.</div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="showRemoveWatchlist">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" style="text-align: center;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeWatchlistAlert()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div>{{companyDescription.ticker}} removed from Watchlist.</div>
+      </div>
+    </ng-container>
+    <br>
+    <ng-container *ngIf="showBuy">
+      <div class="alert alert-success alert-dismissible fade show" role="alert" style="text-align: center;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeBuyAlert();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div>{{companyDescription.ticker}} bought successfully!</div>
+      </div>
+    </ng-container>
+    <br>
+    <div class="details-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+            <div style="display: flex;">
+              <div style="font-size: 38px; line-height: 45px; width: fit-content;">{{companyDescription.ticker}}&nbsp;</div>
+              <ng-container *ngTemplateOutlet="star"></ng-container>
+            </div>
+          </div>
+          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+            <div style="font-size: 38px; line-height: 45px; width: 100%; text-align: right;"
+              [ngClass]="{green: change > 0, red: change < 0}">{{latestPrice.last | number : '1.2-2'}}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+            <div style="color: gray; font-weight: normal; font-size: 26px; line-height: 36px;">
+              {{companyDescription.name}}
+            </div>
+          </div>
+          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+            <div [ngClass]="{green: change > 0, red: change < 0}">
+              <div
+                style="font-weight: normal; font-size: 26px; line-height: 36px; float: right; display: flex; flex-wrap: wrap; justify-content: flex-end;">
+                <div *ngIf="change > 0" style="width: fit-content;">
+                  <div *ngTemplateOutlet="up"></div>
+                </div>
+                <div *ngIf="change < 0" style="width: fit-content;">
+                  <div *ngTemplateOutlet="down"></div>
+                </div>&nbsp;
+                <div>{{change | number : '1.2-2'}}</div>
+                <div>({{changePercent | number : '1.2-2'}}%)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+            <div>{{companyDescription.exchangeCode}}</div>
+          </div>
+          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+            <div style="width: 100%; text-align: right;">{{currentDateTime}}</div>
+          </div>
+        </div>
+      </div>
 
-<div *ngIf="!isLoading">
-  <!-- <div [innerHTML] = "watchAlert"></div>
-  <div [innerHTML] = "buyAlert"></div> -->
-  <ng-container *ngIf="showAddWatchlist">
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <button type="button"  id="walert" class="close" data-dismiss="alert" aria-label="Close" (click)="closeWatchlistAlert()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <div>{{companyDescription.ticker}} added to Watchlist.</div>
+
+      <!-- <div style="width: 50%; float: left; height: 100%;">
+        <div style="display: flex;">
+          <div style="font-size: 38px; line-height: 45px; width: fit-content;">{{companyDescription.ticker}}</div>
+          <ng-container *ngTemplateOutlet="star"></ng-container>
+        </div>
+        <div style="color: gray; font-weight: normal; font-size: 26px; line-height: 36px;">{{companyDescription.name}}
+        </div>
+        <div style="">{{companyDescription.exchangeCode}}</div>
+        <button class="btn btn-success" (click)="openBuyModal()"
+          style="margin-top: 5px; padding-right: 15px; padding-left: 15px;">Buy</button>
+      </div> -->
+      <!-- <div id="rightcolumn" style="width: 50%; float: left; height: 100%; vertical-align: middle;">
+        <div style="font-size: 38px; line-height: 45px; width: 100%; text-align: right;"
+          [ngClass]="{green: change > 0, red: change < 0}">{{latestPrice.last | number : '1.2-2'}}</div>
+        <div>
+          <div class="row1" [ngClass]="{green: change > 0, red: change < 0}">
+            <div *ngIf="change > 0">
+              <div *ngTemplateOutlet="up"></div>
+            </div>
+            <div *ngIf="change < 0">
+              <div *ngTemplateOutlet="down"></div>
+            </div>&nbsp;
+            <div style="display:flex; flex-wrap: wrap; float: right;">
+              <div style="font-weight: normal; font-size: 26px; line-height: 36px; float: right; ">
+                {{change | number : '1.2-2'}}</div>
+              <div style="font-weight: normal; font-size: 26px; line-height: 36px; float: right;">
+                ({{changePercent | number : '1.2-2'}}%)</div>
+            </div>
+          </div>
+        </div>
+        <div style="width: 100%; text-align: right;">{{currentDateTime}}</div>
+      </div> -->
     </div>
-  </ng-container>
-  <ng-container *ngIf="showRemoveWatchlist">
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeWatchlistAlert()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <div>{{companyDescription.ticker}} removed from Watchlist.</div>
+    <div style="width: 80%; margin: auto; align-content: flex-start;">
+      <button class="btn btn-success" (click)="openBuyModal()"
+        style="margin-top: 5px; padding-right: 15px; padding-left: 15px; margin-left: 15px;">Buy</button>
     </div>
-  </ng-container>
-  <ng-container *ngIf="showBuy">
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeBuyAlert();">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <div>{{companyDescription.ticker}} bought successfully!</div>
+
+    <br>
+    <div style="margin: auto; width: fit-content; text-align: center;">
+      <div *ngIf="isMarketOpen" style="color: green; background-color: #d7edd9; width: max-content; margin: auto;">
+        Market is Open</div>
+      <div *ngIf="!isMarketOpen" style="color: darkred; background-color: #f5d7d9; width: max-content; margin: auto;">
+        Market Closed on {{latestDateTime}}
+      </div>
     </div>
-  </ng-container>
-  
-  <mat-tab-group mat-align-tabs="center">
-    <mat-tab label="Summary">
-      <ng-container matTabContent *ngTemplateOutlet="summary"></ng-container>
-    </mat-tab>
-    <mat-tab label="Top News">
-      <ng-container matTabContent *ngTemplateOutlet="topnews"></ng-container>
-    </mat-tab>
-    <mat-tab label="Charts">
-      <ng-container *ngIf="companyHistoricalData!=null;">
-        <app-chart [companyHistoricalData]="companyHistoricalData" [ticker]="companyDescription.ticker"></app-chart>
-      </ng-container>
-    </mat-tab>
-  </mat-tab-group>
+
+    <br>
+    <mat-tab-group mat-align-tabs="center" animationDuration="0ms" style="width: 80%; margin: auto;" mat-stretch-tabs>
+      <mat-tab label="Summary">
+        <ng-container matTabContent *ngTemplateOutlet="summary"></ng-container>
+      </mat-tab>
+      <mat-tab label="Top News">
+        <ng-container matTabContent *ngTemplateOutlet="topnews"></ng-container>
+      </mat-tab>
+      <mat-tab label="Charts">
+        <ng-container *ngIf="companyHistoricalData!=null;">
+          <app-chart [companyHistoricalData]="companyHistoricalData" [ticker]="companyDescription.ticker"></app-chart>
+        </ng-container>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>
 
-<ng-template #summary>
-  <div>Current time {{currentDateTime}}</div>
-  <div *ngIf="isMarketOpen">Market is open</div>
-  <div *ngIf="!isMarketOpen">Market Closed on {{latestDateTime}}</div>
-  <div>{{companyDescription.ticker}}</div>
-  <div>Change {{latestPrice.last - latestPrice.prevClose}}</div>
-  <div *ngIf="companyDescription != null && isValid">{{companyDescription.description}}</div>
-  <div *ngIf="latestPrice != null">{{latestPrice.last}}</div>
-  <button (click)="openBuyModal()">Buy</button>
-  <br><br>
+
+<ng-template matTabContent #summary>
+  <br>
+  <div class="container">
+    <div class="row" style="margin: auto;">
+      <div class="col-12 col-sm-12 col-md-6 col-lg-6" style="width: 50%;">
+        <!-- my table -->
+        <div class="row">
+          <div class="col-6 col-sm-6 col-md-6 col-lg-6" style="font-size: 14px;">
+            <div class="column-left">
+              <div>High Price:</div>
+              <div>Low Price:</div>
+              <div>Open Price:</div>
+              <div>Prev. Close:</div>
+              <div>Volume:</div>
+            </div>
+            <div class="column-right">
+              <div>{{latestPrice.high | number : '1.2-2'}}</div>
+              <!-- <div>{{117.275 | number : '1.2-2'}}</div> -->
+              <div>{{latestPrice.low | number : '1.2-2'}}</div>
+              <div>{{latestPrice.open | number : '1.2-2'}}</div>
+              <div>{{latestPrice.prevClose | number : '1.2-2'}}</div>
+              <div>{{latestPrice.volume | number}} </div>
+            </div>
+          </div>
+          <div [ngClass]='{hidden: !isMarketOpen}' class="col-6 col-sm-6 col-md-6 col-lg-6" style="font-size: 14px;">
+            <div class="column-left">
+              <div>Mid Price:</div>
+              <div>Ask Price:</div>
+              <div>Ask Size:</div>
+              <div>Bid Price:</div>
+              <div>Bid Size:</div>
+            </div>
+            <div class="column-right">
+              <div>{{mid}}</div>
+              <div>{{askPrice}}</div>
+              <div>{{latestPrice.askSize}}</div>
+              <div>{{latestPrice.bidPrice}}</div>
+              <div>{{latestPrice.bidSize}}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- description -->
+        <br><br>
+        <div style="width: 100%; text-align: center; font-weight: 500; font-size: large;">Company's Description</div>
+        <br>
+        <div>Start Date: {{companyDescription.startDate}}</div>
+        <br>
+        <div style="width: 100%;">{{companyDescription.description}}</div>
+        <br>
+      </div>
+
+
+      <div class="col-12 col-sm-12 col-md-6 col-lg-6 " style="width: 50%;">
+        <ng-container *ngTemplateOutlet="dailyChart"></ng-container>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #star>
   <div>
     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-star" fill="currentColor"
       xmlns="http://www.w3.org/2000/svg" (click)="toggleWatchlist();" *ngIf="!isFilled">
@@ -66,19 +219,50 @@
         d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
     </svg>
   </div>
-  <ng-container *ngTemplateOutlet="dailyChart"></ng-container>
 </ng-template>
 
+<!-- green up -->
+<ng-template #up>
+
+  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-up-fill" fill="green"
+    xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+  </svg>
+</ng-template>
+
+
+<!-- red down -->
+<ng-template #down>
+  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="red"
+    xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+  </svg>
+</ng-template>
+
+
 <ng-template #topnews>
-  Our top news
-  <div *ngFor="let news of newsData">
-    <app-newscard [news]="news"></app-newscard>
+  <br>
+  <div class="container">
+    <div class="row">
+      <div *ngFor="let news of newsData" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 "
+        style=" margin-bottom: 20px !important;">
+        <app-newscard [news]="news"></app-newscard>
+      </div>
+    </div>
   </div>
 </ng-template>
 
-<ng-template #dailyChart>
-  <div>
-    <highcharts-chart [Highcharts]="Highcharts" [constructorType]="'stockChart'" [options]="chartOptions" [(update)]="chartUpdateFlag">
+<ng-template matTabContent #dailyChart>
+  <div style="width: 100%; display: flex;">
+    <!-- style="height:100%;width:100%;position:absolute;" -->
+    <highcharts-chart [Highcharts]="Highcharts" [constructorType]="'stockChart'" [options]="chartOptions"
+      [(update)]="chartUpdateFlag" style="width: 100%;">
     </highcharts-chart>
   </div>
 </ng-template>
+
+
+<button id="batman" style="visibility: hidden;">Hello</button>
+<!-- [(reflow)]="chartUpdateFlag" -->

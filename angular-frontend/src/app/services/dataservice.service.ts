@@ -4,12 +4,18 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DataService {
+  baseURL;
 
-  constructor() { }
+  constructor() {
+    // this.baseURL = "192.168.1.119:8088";
+    // this.baseURL = "http://localhost:8088";
+    this.baseURL = "";
+   }
 
   getSearchSuggestions(term: string) {
     // return Date();
-    let url = `http://localhost:3000/search?keyword=${term}`;
+    let url = `${this.baseURL}/search?keyword=${term}`;
+    // let url = `http://192.168.1.119:3000/search?keyword=${term}`;
     let fetchData = fetch(url);
     let searchResults = null;
     return fetchData.then((res) => res.json()).then((json) => {
@@ -19,7 +25,7 @@ export class DataService {
   }
 
   getCompanyDescription(keyword: string) {
-    let url = `http://localhost:3000/getCompanyDescription?keyword=${keyword}`;
+    let url = `${this.baseURL}/getCompanyDescription?keyword=${keyword}`;
     let fetchData = fetch(url);
     let companyDescription = null;
     return fetchData.then((res) => res.json()).then((json) => {
@@ -30,7 +36,7 @@ export class DataService {
   }
 
   getCompanyLatestPrice(keyword: string) {
-    let url = `http://localhost:3000/getCompanyLatestPrice?keyword=${keyword}`;
+    let url = `${this.baseURL}/getCompanyLatestPrice?keyword=${keyword}`;
     let fetchData = fetch(url);
     let companyLatestPrice = null;
     return fetchData.then((res) => res.json()).then((json) => {
@@ -45,7 +51,7 @@ export class DataService {
   }
 
   getCompanyHistoricalData(keyword: string, startDate: string) {
-    let url = `http://localhost:3000/getCompanyHistoricalData?keyword=${keyword}&startDate=${startDate}`;
+    let url = `${this.baseURL}/getCompanyHistoricalData?keyword=${keyword}&startDate=${startDate}`;
     let fetchData = fetch(url);
     let historicalData = null;
     return fetchData.then((res) => res.json()).then((json) => {
@@ -55,7 +61,7 @@ export class DataService {
   }
 
   getDailyChartData(keyword: string, startDate: string) {
-    let url = `http://localhost:3000/getDailyChartData?keyword=${keyword}&startDate=${startDate}`;
+    let url = `${this.baseURL}/getDailyChartData?keyword=${keyword}&startDate=${startDate}`;
     let fetchData = fetch(url);
     let dailyChartData = null;
     return fetchData.then((res) => res.json()).then((json) => {
@@ -65,7 +71,7 @@ export class DataService {
   }
 
   getNewsData(keyword: string) {
-    let url = `http://localhost:3000/getNewsData?keyword=${keyword}`;
+    let url = `${this.baseURL}/getNewsData?keyword=${keyword}`;
     let fetchData = fetch(url);
     let newsData = null;
     return fetchData.then((res) => res.json()).then((json) => {

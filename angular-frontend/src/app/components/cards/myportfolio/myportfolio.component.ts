@@ -17,6 +17,9 @@ export class MyportfolioComponent implements OnInit {
   @Input() portfolio;
   @Input() currentPriceOfStocks;
   currentPrice;
+  change;
+  marketValue;
+  
 
   constructor(private service: DataService, private modalService: NgbModal, private router: Router) { }
 
@@ -26,13 +29,14 @@ export class MyportfolioComponent implements OnInit {
     //   console.log(this.currentPrice);
     // });
     console.log(this.portfolio.value.ticker);
-    console.log(this.currentPriceOfStocks);
-    for (let i=0; i< this.currentPriceOfStocks.length; i++){
-      console.log(this.currentPriceOfStocks[i].ticker);
-      console.log(this.currentPriceOfStocks[i].ticker == this.portfolio.value.ticker);
-      if (this.currentPriceOfStocks[i].ticker == this.portfolio.value.ticker){
+    console.log(this.currentPriceOfStocks["data"].length);
+    for (let i=0; i< this.currentPriceOfStocks["data"].length; i++){
+      console.log(this.currentPriceOfStocks["data"][i].ticker);
+      console.log(this.currentPriceOfStocks["data"][i].ticker == this.portfolio.value.ticker);
+      if (this.currentPriceOfStocks["data"][i].ticker == this.portfolio.value.ticker){
         console.log("true happened");
-        this.currentPrice = {"last": this.currentPriceOfStocks[i]["last"]};
+        this.currentPrice = {"last": this.currentPriceOfStocks["data"][i]["last"]};
+        this.change = ((this.portfolio.value.totalCost / this.portfolio.value.quantity) - this.currentPriceOfStocks["data"][i].last).toFixed(2);
       }
     }
     console.log(this.currentPrice);

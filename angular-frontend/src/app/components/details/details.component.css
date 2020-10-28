@@ -1,3 +1,81 @@
 #star:hover {
     cursor: pointer;
 }
+
+.alert{
+    width: 80%;
+    margin: auto;
+}
+
+.details-container{
+    /* width: 80%; */
+    width: 100%;
+    margin: auto;
+}
+
+.details-top{
+    display: flex;
+    /* position: relative; */
+    width: 80%;
+    margin: auto;
+}
+
+.news-container{
+    /* display: flex; */
+    justify-content: space-between;
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+
+    grid-gap: 1.5rem;
+    width: 80%;
+    margin: auto;
+    padding-bottom: 20px;
+}
+
+.row1{
+    /* color: hotpink; */
+    justify-content: flex-end;
+    width: 100%;
+    display: flex;
+    float: right;
+}
+
+.green{
+    color: green;
+}
+
+.red{
+    color: red;
+}
+
+.hidden{
+    visibility: hidden;
+}
+
+.table-row{
+    padding: 0;
+}
+
+.column{
+    /* font-size: 17px; */
+    width: 50%;
+    float: left;
+    /* margin: 5px; */
+}
+
+.column-left{
+    width: 50%;
+    float: left;
+    text-align: left;
+    white-space: nowrap;
+
+}
+
+.column-right{
+    width: 50%;
+    float: left;
+    text-align: right;
+    height: 100%;
+}
+

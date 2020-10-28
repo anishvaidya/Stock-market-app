@@ -1,12 +1,14 @@
-<div>My Watchlist</div>
-<mat-spinner diameter="50" *ngIf="isLoading && myWatchlist.length != 0"></mat-spinner>
-<div *ngIf="myWatchlist.length != 0">
-    <div *ngFor="let stock of myWatchlist | keyvalue">
-        <div *ngIf="currentPriceOfStocks.length != 0">
-            <app-mywatchlist [stock]="stock" [currentPriceOfStocks]="currentPriceOfStocks"></app-mywatchlist>
-        <br><br>
+<div class="watchlist-container">
+    <div class="watchlist-title">My Watchlist</div>
+    <mat-spinner diameter="50" *ngIf="isLoading && myWatchlist.length != 0" class="loader"></mat-spinner>
+    <div *ngIf="myWatchlist.length != 0">
+        <div *ngFor="let stock of myWatchlist | keyvalue">
+            <div *ngIf="currentPriceOfStocks.length != 0">
+                <app-mywatchlist [stock]="stock" [currentPriceOfStocks]="currentPriceOfStocks"></app-mywatchlist>
+            </div>
         </div>
-        
     </div>
+    <div *ngIf="myWatchlist.length == 0"><div class="alert alert-warning" role="alert" style="text-align: center;">
+        Currently you don't have any stocks in your watchlist.
+      </div></div>
 </div>
-<div *ngIf="myWatchlist.length == 0">Currently you don't have any stocks in your watchlist.</div>

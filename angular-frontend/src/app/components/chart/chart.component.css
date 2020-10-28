@@ -1,0 +1,6 @@
+.my-chart{
+    width: 100%;
+    /* width: calc(100vw - 50px); */
+    /* width: 80%; */
+    margin: auto;
+}

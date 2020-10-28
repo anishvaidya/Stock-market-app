@@ -1,10 +1,13 @@
-div {
-    position: absolute;
+/* .div1 {
     bottom: 0;
     width: 100vw;
     text-align: center;
     align-content: center;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    background-color: lightgray;
+} */
+
+div{
     background-color: lightgray;
 }

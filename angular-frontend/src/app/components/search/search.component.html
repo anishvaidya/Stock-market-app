@@ -1,14 +1,21 @@
-<p>Stock Search</p>
-<form>
-    <input type="text" placeholder="Enter stock name" matInput [formControl]="searchTerm" [matAutocomplete]="auto">
-    
-
-        
-    <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngIf="isLoading"><mat-spinner diameter="50"></mat-spinner></mat-option>
-        <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.ticker">
-            {{suggestion.ticker | uppercase }} | {{ suggestion.name }}
-        </mat-option>
-    </mat-autocomplete>
-    <button type="button" (click)="searchStock()">Search</button>
-</form>
+<div id="searchcontainer">
+    <div id="searchheading">STOCK SEARCH</div>
+    <div class="search-div">
+        <form style="vertical-align: middle;">
+            <input type="text" placeholder="Enter stock name" matInput [formControl]="searchTerm"
+                [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngIf="isLoading">
+                    <mat-spinner diameter="50"></mat-spinner>
+                </mat-option>
+                <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.ticker">
+                    <strong>{{suggestion.ticker | uppercase }}</strong> | {{ suggestion.name }}
+                </mat-option>
+            </mat-autocomplete>
+            <i class="fas fa-search" aria-hidden="true" (click)="searchStock()" style="color: #6f3aef;"></i>
+            <!-- <div id="searchicon" class="material-icons" style="color: #6f3aef;">
+                search
+            </div> -->
+        </form>
+    </div>
+</div>
