@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { DataService } from '../../../services/dataservice.service';
 import {Router} from '@angular/router';
 
@@ -13,7 +13,7 @@ import { SellComponent } from '../../modals/sell/sell.component';
   templateUrl: './myportfolio.component.html',
   styleUrls: ['./myportfolio.component.css']
 })
-export class MyportfolioComponent implements OnInit {
+export class MyportfolioComponent implements OnChanges {
   @Input() portfolio;
   @Input() currentPriceOfStocks;
   currentPrice;
@@ -29,17 +29,37 @@ export class MyportfolioComponent implements OnInit {
     //   console.log(this.currentPrice);
     // });
     console.log(this.portfolio.value.ticker);
-    console.log(this.currentPriceOfStocks["data"].length);
-    for (let i=0; i< this.currentPriceOfStocks["data"].length; i++){
-      console.log(this.currentPriceOfStocks["data"][i].ticker);
-      console.log(this.currentPriceOfStocks["data"][i].ticker == this.portfolio.value.ticker);
-      if (this.currentPriceOfStocks["data"][i].ticker == this.portfolio.value.ticker){
+    console.log(this.currentPriceOfStocks.length);
+    for (let i=0; i< this.currentPriceOfStocks.length; i++){
+      console.log(this.currentPriceOfStocks[i].ticker);
+      console.log(this.currentPriceOfStocks[i].ticker == this.portfolio.value.ticker);
+      if (this.currentPriceOfStocks[i].ticker == this.portfolio.value.ticker){
         console.log("true happened");
-        this.currentPrice = {"last": this.currentPriceOfStocks["data"][i]["last"]};
-        this.change = ((this.portfolio.value.totalCost / this.portfolio.value.quantity) - this.currentPriceOfStocks["data"][i].last).toFixed(2);
+        this.currentPrice = {"last": this.currentPriceOfStocks[i]["last"]};
+        this.change = ((this.portfolio.value.totalCost / this.portfolio.value.quantity) - this.currentPriceOfStocks[i].last).toFixed(2);
       }
     }
     console.log(this.currentPrice);
+}
+
+ngOnChanges(): void {
+  // this.service.getCompanyLatestPrice(this.portfolio.value.ticker).then((data) => {
+  //   this.currentPrice = {"last": data.last};
+  //   console.log(this.currentPrice);
+  // });
+  console.log("on Changes portfolio");
+  console.log(this.portfolio.value.ticker);
+  console.log(this.currentPriceOfStocks.length);
+  for (let i=0; i< this.currentPriceOfStocks.length; i++){
+    console.log(this.currentPriceOfStocks[i].ticker);
+    console.log(this.currentPriceOfStocks[i].ticker == this.portfolio.value.ticker);
+    if (this.currentPriceOfStocks[i].ticker == this.portfolio.value.ticker){
+      console.log("true happened");
+      this.currentPrice = {"last": this.currentPriceOfStocks[i]["last"]};
+      this.change = ((this.portfolio.value.totalCost / this.portfolio.value.quantity) - this.currentPriceOfStocks[i].last).toFixed(2);
+    }
+  }
+  console.log(this.currentPrice);
 }
 
   openBuyModal() {

@@ -3,7 +3,7 @@
     <mat-spinner diameter="50" *ngIf="isLoading && myPortfolios.length != 0" class="loader"></mat-spinner>
     <div *ngIf="myPortfolios.length != 0">
         <div *ngFor="let portfolio of myPortfolios | keyvalue">
-            <div *ngIf="currentPriceOfStocks.data.length != 0">
+            <div *ngIf="currentPriceOfStocks.length != 0">
                 <app-myportfolio [portfolio]="portfolio" [currentPriceOfStocks]="currentPriceOfStocks"></app-myportfolio>
             </div>
         </div>

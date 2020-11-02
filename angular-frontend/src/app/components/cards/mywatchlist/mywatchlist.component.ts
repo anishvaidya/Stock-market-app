@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {DatastorageService} from '../../../services/datastorage.service';
 
@@ -7,7 +7,7 @@ import {DatastorageService} from '../../../services/datastorage.service';
   templateUrl: './mywatchlist.component.html',
   styleUrls: ['./mywatchlist.component.css']
 })
-export class MywatchlistComponent implements OnInit {
+export class MywatchlistComponent implements OnChanges {
   @Input() stock;
   @Input() currentPriceOfStocks;
   
@@ -22,9 +22,21 @@ export class MywatchlistComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    for (let i = 0; i < this.currentPriceOfStocks["data"].length; i++){
-      if (this.stock.value.ticker == this.currentPriceOfStocks["data"][i].ticker){
-        this.watchlistStock = this.currentPriceOfStocks["data"][i];
+    for (let i = 0; i < this.currentPriceOfStocks.length; i++){
+      if (this.stock.value.ticker == this.currentPriceOfStocks[i].ticker){
+        this.watchlistStock = this.currentPriceOfStocks[i];
+        break;
+      }
+    }
+    this.change = (this.watchlistStock.last - this.watchlistStock.prevClose).toFixed(2);
+    this.changePercent = ((this.change * 100) / this.watchlistStock.prevClose).toFixed(2);
+  }
+
+  ngOnChanges(){
+    console.log("On changes runs");
+    for (let i = 0; i < this.currentPriceOfStocks.length; i++){
+      if (this.stock.value.ticker == this.currentPriceOfStocks[i].ticker){
+        this.watchlistStock = this.currentPriceOfStocks[i];
         break;
       }
     }

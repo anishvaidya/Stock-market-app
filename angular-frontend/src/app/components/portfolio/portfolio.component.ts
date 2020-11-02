@@ -15,8 +15,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class PortfolioComponent implements OnInit {
   myPortfolios = [];
-  // currentPriceOfStocks = [];
-  currentPriceOfStocks = {"data": []};
+  currentPriceOfStocks = [];
+  // currentPriceOfStocks = {"data": []};
   isLoading = true;
 
   constructor(private dataStorage: DatastorageService, private modalService: NgbModal, private service: DataService) { }
@@ -46,8 +46,8 @@ export class PortfolioComponent implements OnInit {
     this.service.getCompanyLatestPrice(keyword).then((data) => {
       console.log("service called");
       console.log(data);
-      // this.currentPriceOfStocks = data;
-      this.currentPriceOfStocks["data"] = data;
+      this.currentPriceOfStocks = data;
+      // this.currentPriceOfStocks["data"] = data;
       this.isLoading = false;
     });
     console.log(this.currentPriceOfStocks);

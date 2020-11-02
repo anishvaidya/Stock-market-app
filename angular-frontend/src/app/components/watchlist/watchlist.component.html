@@ -3,7 +3,7 @@
     <mat-spinner diameter="50" *ngIf="isLoading && myWatchlist.length != 0" class="loader"></mat-spinner>
     <div *ngIf="myWatchlist.length != 0">
         <div *ngFor="let stock of myWatchlist | keyvalue">
-            <div *ngIf="currentPriceOfStocks.data.length != 0">
+            <div *ngIf="currentPriceOfStocks.length != 0">
                 <app-mywatchlist [stock]="stock" [currentPriceOfStocks]="currentPriceOfStocks"></app-mywatchlist>
             </div>
         </div>
