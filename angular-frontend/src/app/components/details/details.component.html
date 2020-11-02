@@ -187,11 +187,12 @@
               <div>Bid Size:</div>
             </div>
             <div class="column-right">
-              <div>{{mid}}</div>
-              <div>{{askPrice}}</div>
-              <div>{{latestPrice.askSize}}</div>
-              <div>{{latestPrice.bidPrice}}</div>
-              <div>{{latestPrice.bidSize}}</div>
+              <div *ngIf="mid!=0;">{{mid | number : '1.2-2'}}</div>
+              <div *ngIf="mid==0;">-</div>
+              <div>{{askPrice | number : '1.2-2'}}</div>
+              <div>{{latestPrice.askSize | number : '1.2-2'}}</div>
+              <div>{{latestPrice.bidPrice | number : '1.2-2'}}</div>
+              <div>{{latestPrice.bidSize | number : '1.2-2'}}</div>
             </div>
           </div>
         </div>

@@ -120,7 +120,8 @@ export class DetailsComponent implements OnInit {
       this.bidPrice = this.latestPrice.bidPrice;
       this.bidSize = this.latestPrice.bidSize;
       if (this.mid == null) {
-        this.mid = "-";
+        // this.mid = "-";
+        this.mid = 0;
       }
       else {
         this.mid = Number(this.mid.toFixed(2));
@@ -132,16 +133,28 @@ export class DetailsComponent implements OnInit {
       //   this.askPrice = this.latestPrice.askPrice;
       // }
       if (this.askPrice != null) {
-        this.askPrice = this.askPrice.toFixed(2);
+        this.askPrice = Number(this.askPrice.toFixed(2));
+      }
+      else{
+        this.askPrice = 0;
       }
       if (this.askSize != null) {
-        this.askSize = this.askSize.toFixed(2);
+        this.askSize = Number(this.askSize.toFixed(2));
+      }
+      else{
+        this.askSize = 0;
       }
       if (this.bidPrice != null) {
-        this.bidPrice = this.bidPrice.toFixed(2);
+        this.bidPrice = Number(this.bidPrice.toFixed(2));
+      }
+      else{
+        this.bidPrice = 0;
       }
       if (this.bidSize != null) {
-        this.bidSize = this.bidSize.toFixed(2);
+        this.bidSize = Number(this.bidSize.toFixed(2));
+      }
+      else{
+        this.bidSize = 0;
       }
       this.change = (this.latestPrice.last - this.latestPrice.prevClose).toFixed(2);
       this.changePercent = (this.change * 100 / this.latestPrice.prevClose).toFixed(2);
