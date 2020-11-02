@@ -31,7 +31,7 @@ export class DatastorageService {
     if (this.isLocalStorageSupported) {
       let myStocks = JSON.parse(this.localStorage.getItem("myStocks")) || [];
       if (myStocks.length == 0) {
-        let order = { "ticker": stock, "name": name, "quantity": quantity, "totalCost": orderPrice };
+        let order = { "ticker": stock, "name": name, "quantity": Number(quantity.toFixed(2)), "totalCost": orderPrice };
         myStocks.push(order);
         this.localStorage.setItem("myStocks", JSON.stringify(myStocks));
         // this.subject.next(myStocks);
@@ -41,7 +41,7 @@ export class DatastorageService {
           if (myStocks[i]["ticker"] === stock) {
             // stock already purchased
             console.log("stock already purchased");
-            myStocks[i]["quantity"] = quantity + myStocks[i]["quantity"];
+            myStocks[i]["quantity"] = Number((quantity + myStocks[i]["quantity"]).toFixed(2));
             myStocks[i]["totalCost"] = orderPrice + myStocks[i]["totalCost"];
             this.localStorage.setItem("myStocks", JSON.stringify(myStocks));
             this.subject.next(myStocks);
@@ -50,7 +50,7 @@ export class DatastorageService {
         }
         // new stock
         console.log("stock bought");
-        let order = { "ticker": stock, "name": name, "quantity": quantity, "totalCost": orderPrice };
+        let order = { "ticker": stock, "name": name, "quantity": Number(quantity.toFixed(2)), "totalCost": orderPrice };
         myStocks.push(order);
         myStocks.sort((a, b) => a.ticker.localeCompare(b.ticker));
         this.localStorage.setItem("myStocks", JSON.stringify(myStocks));
@@ -69,7 +69,7 @@ export class DatastorageService {
       if (myStocks.length != 0) {
         for (var i = 0; i < myStocks.length; i++) {
           if (myStocks[i]["ticker"] == stock) {
-            myStocks[i]["quantity"] -= quantity;
+            myStocks[i]["quantity"] = Number((myStocks[i]["quantity"] - quantity).toFixed(2));
             myStocks[i]["totalCost"] -= orderPrice;
             // break;
             if (myStocks[i]["quantity"] != 0) {

@@ -2,7 +2,9 @@
 
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
-html, body { height: 100%; }
+html, body { height: 100%;
+  /* overflow-x: hidden; */
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
@@ -18,7 +20,8 @@ button:focus {
     display: block;
     position: relative;
     /* padding-bottom: 3rem; */
-    width: 100vw;
+    /* width: 100vw; */
+    width: 100%;
 }
 
 .loader{

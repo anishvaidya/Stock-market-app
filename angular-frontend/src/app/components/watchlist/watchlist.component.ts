@@ -11,7 +11,7 @@ import { DataService } from '../../services/dataservice.service';
 })
 export class WatchlistComponent implements OnInit {
   myWatchlist = [];
-  currentPriceOfStocks = [];
+  currentPriceOfStocks = {"data": []};
   isLoading = true;
 
   constructor(private dataStorage: DatastorageService, private service: DataService) { }
@@ -22,6 +22,7 @@ export class WatchlistComponent implements OnInit {
 
     this.dataStorage.watchStorage().subscribe((data) => {
       this.myWatchlist = data;
+      this.generateCurrentPrice();
       console.log("watched for change");
     });
   }
@@ -39,7 +40,8 @@ export class WatchlistComponent implements OnInit {
     this.service.getCompanyLatestPrice(keyword).then((data) => {
       console.log("service called");
       console.log(data);
-      this.currentPriceOfStocks = data;
+      // this.currentPriceOfStocks = data;
+      this.currentPriceOfStocks["data"] = data;
       this.isLoading = false;
       console.log(this.currentPriceOfStocks);
     });

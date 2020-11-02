@@ -3,6 +3,11 @@
     /* height: 60px; */
 }
 
+/* .navbar-nav {
+    margin: 0;
+    padding: 7.5px 15px;
+} */
+
 .navbar-toggler{
     color: lightgrey !important;
 }

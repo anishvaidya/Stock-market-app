@@ -98,7 +98,7 @@ export class DetailsComponent implements OnInit {
       if (Object.keys(this.companyDescription).length != 0) {
         console.log("this runs");
 
-        this.buildChart();
+        // this.buildChart();
         this.checkInWatchlist();
         this.getLatestPrice();
         this.latestPriceID = setInterval(() => this.getLatestPrice(), 15000);
@@ -119,10 +119,10 @@ export class DetailsComponent implements OnInit {
       this.askSize = this.latestPrice.askSize;
       this.bidPrice = this.latestPrice.bidPrice;
       this.bidSize = this.latestPrice.bidSize;
-      if(this.mid == null){
+      if (this.mid == null) {
         this.mid = "-";
       }
-      else{
+      else {
         this.mid = Number(this.mid.toFixed(2));
       }
       // if (this.latestPrice.askPrice == null){
@@ -131,16 +131,16 @@ export class DetailsComponent implements OnInit {
       // else{
       //   this.askPrice = this.latestPrice.askPrice;
       // }
-      if (this.askPrice != null){
+      if (this.askPrice != null) {
         this.askPrice = this.askPrice.toFixed(2);
       }
-      if (this.askSize != null){
+      if (this.askSize != null) {
         this.askSize = this.askSize.toFixed(2);
       }
-      if (this.bidPrice != null){
+      if (this.bidPrice != null) {
         this.bidPrice = this.bidPrice.toFixed(2);
       }
-      if (this.bidSize != null){
+      if (this.bidSize != null) {
         this.bidSize = this.bidSize.toFixed(2);
       }
       this.change = (this.latestPrice.last - this.latestPrice.prevClose).toFixed(2);
@@ -215,14 +215,21 @@ export class DetailsComponent implements OnInit {
       this.dailyChartData = data;
       console.log(this.dailyChartData);
 
-      this.buildChart();
-      this.updateDailyChartPrice();
-      this.resize();
+      // this.buildChart();
+      // this.updateDailyChartPrice();
+      // this.resize();
 
       // window.setTimeout(function(){ $(window).trigger('resize'); }, 500);
       // remove loading
       if (this.companyDescription != null && this.latestPrice != null && this.dailyChartData != null) {
         this.isLoading = false;
+
+        setTimeout(() => {
+          this.buildChart();
+          this.updateDailyChartPrice();
+          this.resize();
+        }, 50);
+
         console.log("loading", this.isLoading);
         if (this.newsData == null) {
           this.getNewsData();
@@ -272,13 +279,13 @@ export class DetailsComponent implements OnInit {
     modalRef.componentInstance.buyReceipt.subscribe(($e) => {
       console.log($e, "receipt in parent");
       // this.buyAlert = this.buyAlertBought;
-      if ($e){
+      if ($e) {
         this.showBuy = true;
-      setTimeout(() => {
-        this.showBuy = false;
-      }, 5000);
+        setTimeout(() => {
+          this.showBuy = false;
+        }, 5000);
       }
-      
+
     });
   }
 
@@ -373,12 +380,12 @@ export class DetailsComponent implements OnInit {
 
   buildChart() {
     this.chartOptions = {
-      
+
       chart: {
         type: 'line',
         // width: 400,
         reflow: true,
-    },
+      },
       title: {
         text: "ANISH",
       },
@@ -404,12 +411,12 @@ export class DetailsComponent implements OnInit {
     };
   }
 
-  closeWatchlistAlert(){
+  closeWatchlistAlert() {
     this.showAddWatchlist = false;
-    this.showRemoveWatchlist=false;
+    this.showRemoveWatchlist = false;
   }
 
-  closeBuyAlert(){
+  closeBuyAlert() {
     this.showBuy = false;
   }
 
@@ -441,11 +448,11 @@ export class DetailsComponent implements OnInit {
   //   ]
   // };
 
-  resize(){
+  resize() {
     console.log("resize called");
     // window.dispatchEvent(new Event('resize'));
     //   window.resizeTo(window.screen.availWidth*(0.5), window.screen.availHeight*(0.5));
-    let element:HTMLElement = document.getElementById('batman') as HTMLElement;
+    let element: HTMLElement = document.getElementById('batman') as HTMLElement;
     element.click();
   }
 

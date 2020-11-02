@@ -22,9 +22,9 @@ export class MywatchlistComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    for (let i = 0; i < this.currentPriceOfStocks.length; i++){
-      if (this.stock.value.ticker == this.currentPriceOfStocks[i].ticker){
-        this.watchlistStock = this.currentPriceOfStocks[i];
+    for (let i = 0; i < this.currentPriceOfStocks["data"].length; i++){
+      if (this.stock.value.ticker == this.currentPriceOfStocks["data"][i].ticker){
+        this.watchlistStock = this.currentPriceOfStocks["data"][i];
         break;
       }
     }

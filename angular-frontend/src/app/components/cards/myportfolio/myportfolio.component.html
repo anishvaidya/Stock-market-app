@@ -14,7 +14,7 @@
                 <div>Total Cost:</div>
             </div>
             <div class="column-right">
-                <div>{{portfolio.value.quantity}}</div>
+                <div>{{portfolio.value.quantity | number : '1.2-2'}}</div>
                 <div>{{portfolio.value.totalCost / portfolio.value.quantity | number : '1.2-2'}}</div>
                 <div>{{portfolio.value.totalCost | number : '1.2-2'}}</div>
             </div>
