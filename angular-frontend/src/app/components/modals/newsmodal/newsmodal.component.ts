@@ -20,7 +20,7 @@ export class NewsmodalComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.twitterURL = `https://twitter.com/intent/tweet?text=${this.news.title}&url=${this.news.url}`;
+    this.twitterURL = `https://twitter.com/intent/tweet?text=${encodeURIComponent(this.news.title)}&url=${encodeURIComponent(this.news.url)}`;
     this.facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${this.news.url}`;
   }
 }
