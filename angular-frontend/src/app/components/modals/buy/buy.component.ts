@@ -45,7 +45,7 @@ export class BuyComponent implements OnInit {
   }
 
   updateTotalPrice(){
-    this.totalPrice = this.quantity.value * this.currentPriceLatest.last;
+    this.totalPrice = Number((this.quantity.value * this.currentPriceLatest.last).toFixed(2));
   }
 
   buyStock() {

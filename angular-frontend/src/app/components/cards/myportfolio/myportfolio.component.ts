@@ -56,7 +56,7 @@ ngOnChanges(): void {
     if (this.currentPriceOfStocks[i].ticker == this.portfolio.value.ticker){
       console.log("true happened");
       this.currentPrice = {"last": this.currentPriceOfStocks[i]["last"]};
-      this.change = ((this.portfolio.value.totalCost / this.portfolio.value.quantity) - this.currentPriceOfStocks[i].last).toFixed(2);
+      this.change = (-(this.portfolio.value.totalCost / this.portfolio.value.quantity) + this.currentPriceOfStocks[i].last).toFixed(2);
     }
   }
   console.log(this.currentPrice);

@@ -33,7 +33,7 @@ export class SellComponent implements OnInit {
     this.quantity.valueChanges.subscribe(() => {
       this.isValid = false;
       this.totalPrice = this.quantity.value * this.stockPrice.last;
-      this.actualTotalPrice = this.quantity.value * (this.currentTotalCost / this.availableQuantity);
+      this.actualTotalPrice = Number((this.quantity.value * (this.currentTotalCost / this.availableQuantity)).toFixed(2));
 
       console.log(this.totalPrice);
       if (this.quantity.value > 0 && this.quantity.value <= this.availableQuantity){
