@@ -183,7 +183,7 @@ export class DetailsComponent implements OnInit {
       this.latestDate = this.latestPrice.timestamp.slice(0, 10);
       let latestDateTime = new Date(this.latestPrice.timestamp).toLocaleString('en-US', { hour12: false }).split(",");
       let latestDate = latestDateTime[0].split("/");
-      this.latestDateTime = latestDate[2] + "-" + latestDate[0] + "-" + latestDate[1] + latestDateTime[1];
+      this.latestDateTime = latestDate[2].padStart(4, '0') + "-" + latestDate[0].padStart(2, '0') + "-" + latestDate[1].padStart(2, '0') + latestDateTime[1];
 
       console.log(this.latestDate);
       console.log(this.latestDateTime);

@@ -11,7 +11,8 @@
             <div>Current Price: {{currentPriceLatest.last | number : '1.2-2'}}</div>
             <div class="row">
                 <div class="col-3 col-sm-3 col-md-3 col-lg-3" style="line-height: 38px; vertical-align: middle;">Quantity</div>
-                <input class="col-9 col-sm-9 col-md-9 col-lg-9" type="number" class="form-control" ngbAutofocus [formControl]="quantity" style="width: 40%;">
+                <input class="col-9 col-sm-9 col-md-9 col-lg-9" type="number" min="0" oninput="this.value = 
+                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" ngbAutofocus [formControl]="quantity" style="width: 40%;">
             </div>
         </div>
     </div>

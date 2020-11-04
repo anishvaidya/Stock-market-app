@@ -15,7 +15,7 @@ export class NewscardComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    console.log(this.news);
+    // console.log(this.news);
   }
 
   openNewsModal(){
