@@ -218,6 +218,7 @@ export class DetailsComponent implements OnInit {
         this.isMarketOpen = false;
         clearInterval(this.latestPriceID);
         clearInterval(this.dailyChartDataID);
+        clearInterval(this.currentDateTimeID);
         console.log("market is closed");
       }
     });
