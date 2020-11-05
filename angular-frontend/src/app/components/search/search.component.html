@@ -3,7 +3,7 @@
     <div class="search-div">
         <form style="vertical-align: middle;">
             <input type="text" placeholder="Enter stock name" matInput [formControl]="searchTerm"
-                [matAutocomplete]="auto">
+                [matAutocomplete]="auto" (keyup.enter)="searchStock()">
             <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngIf="isLoading">
                     <mat-spinner diameter="50"></mat-spinner>
