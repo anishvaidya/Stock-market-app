@@ -88,3 +88,5 @@ app.get('*', (req,res) => {
 
 const port = process.env.PORT || 8088;
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+// deployed on heroku
